@@ -16,7 +16,8 @@ THIRD_PARTY_APPS = [
 ]
 
 ROOT_APPS = [
-
+    "apps.core",
+    "apps.utils",
 ]
 
 INSTALLED_APPS = [
