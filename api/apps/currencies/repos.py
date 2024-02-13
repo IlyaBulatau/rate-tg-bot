@@ -1,8 +1,8 @@
 from abc import ABC, abstractmethod
 
 from django.db import models
-from rest_framework.serializers import ModelSerializer
 
+from services.parser.domains import CurrencyDomain, RateDomain
 from .models import Currency, Rate
 
 
@@ -27,13 +27,16 @@ class BaseRepository(ABC):
     
 class ModelRepository(BaseRepository):
     
-    def __init__(self, model: models.Model | None):
+    def __init__(self, model: models.Model | None = None):
         if model:
             self.model = model
 
-    def create(self, serializer: ModelSerializer) -> models.Model:
-        obj = self.model.objects.create(**serializer.data)
+    def create(self, data: dict) -> models.Model:
+        obj = self.model.objects.create(**data)
         return obj
+
+    def create_many(self, datas: list[dict]) -> None:
+        self.model.objects.bulk_create([self.model(**data) for data in datas])
     
     def update(self) -> models.Model:
         ...
@@ -45,9 +48,9 @@ class ModelRepository(BaseRepository):
         ...
 
 
-class BaseCurrencyRepository(ModelRepository):
+class CurrencyRepository(ModelRepository):
     model = Currency
 
-class BaseRateRepository(ModelRepository):
+class RateRepository(ModelRepository):
     model = Rate
 

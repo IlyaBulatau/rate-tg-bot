@@ -16,7 +16,7 @@ class CustomModelSerializer(serializers.ModelSerializer):
 class CurrencySerializer(CustomModelSerializer):
     
     class Meta:
-        moddel = Currency
+        model = Currency
         fields = "__all__"
 
 class RateSerializer(CustomModelSerializer):
