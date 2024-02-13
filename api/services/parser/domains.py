@@ -4,8 +4,6 @@ from datetime import date
 
 @dataclass(kw_only=True)
 class CurrencyDomain:
-    idx: int # внутренний код
-    code: int # цифровой код 
     abbreviation: str # буквенный код
     name_ru: str # наименование валюты на русском языке
     name_eng: str # наименование на английском языке
@@ -13,6 +11,6 @@ class CurrencyDomain:
 
 @dataclass(kw_only=True)
 class RateDomain:
-    cur_idx: int
+    cur_abbreviation: str
     date: date #  дата, на которую запрашивается курс
     rate: float # курс

@@ -30,8 +30,6 @@ class CurrencyParser(BaseParser):
     def _prepare_data(self, data: list[dict]) -> list[CurrencyDomain]:
         result = [
             CurrencyDomain(
-                idx=item.get("Cur_ID"),
-                code=item.get("Cur_Code"),
                 abbreviation=item.get("Cur_Abbreviation"),
                 name_ru=item.get("Cur_Name"),
                 name_eng=item.get("Cur_Name_Eng"),
@@ -42,28 +40,28 @@ class CurrencyParser(BaseParser):
         return result
 
 class RateParser(BaseParser):
-    URI = "exrates/rates/{cur_idx}"
+    URI = "exrates/rates/{cur_abbreviation}?parammode=2"
 
-    def parse(self, cur_idx: int) -> RateDomain:
+    def parse(self, cur_abbreviation: str) -> RateDomain:
         with requests.Session() as session:
-            response = session.get(self.get_url.format(cur_idx=cur_idx))
+            response = session.get(self.get_url.format(cur_abbreviation=cur_abbreviation))
         
         data = self._prepare_data(response.json())
         return data
 
-    def parse_many(self, array_cur_idx: list[int]) -> list[RateDomain]:
+    def parse_many(self, array_cur_abbreviation: list[str]) -> list[RateDomain]:
         rate_set: list[RateDomain] = []
         
         with requests.Session() as session:
-            for cur_idx in array_cur_idx:
-                response = session.get(self.get_url.format(cur_idx=cur_idx))
+            for cur_abbreviation in array_cur_abbreviation:
+                response = session.get(self.get_url.format(cur_abbreviation=cur_abbreviation))
                 rate_set.append(self._prepare_data(response.json()))
         
         return rate_set
 
     def _prepare_data(self, data: dict) -> RateDomain:
         return RateDomain(
-            cur_idx=data.get("Cur_ID"),
+            cur_abbreviation=data.get("Cur_Abbreviation"),
             date=data.get("Date"),
             rate=data.get("Cur_OfficialRate")
         )
