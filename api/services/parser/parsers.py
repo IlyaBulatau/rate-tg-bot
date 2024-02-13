@@ -1,7 +1,7 @@
 import requests
 from abc import ABC, abstractmethod
 
-from domains import CurrencyDomain, RateDomain
+from services.parser.domains import CurrencyDomain, RateDomain
 
 
 class BaseParser(ABC):
@@ -37,7 +37,7 @@ class CurrencyParser(BaseParser):
             )
             for item in data
         ]
-        return result
+        return list(set(result))
 
 class RateParser(BaseParser):
     URI = "exrates/rates/{cur_abbreviation}?parammode=2"
