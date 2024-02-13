@@ -21,8 +21,9 @@ COPY . .
 
 EXPOSE 8000
 
-RUN groupadd -r app-group && \
-    useradd -r -g app-group admin && \
-    chown -R admin:app-group /home/code
+# RUN groupadd -r app-group && \
+#     useradd -r -g app-group admin && \
+#     chmod 766 -R /home/code && \
+#     chmod 775 /home/code
 
-USER admin
+# USER admin
