@@ -24,14 +24,14 @@ class CurrencyDomain(DataclassToDict):
 
 @dataclass(kw_only=True, eq=True, frozen=True)
 class RateDomain(DataclassToDict):
-    cur_abbreviation: str
+    currency_abbreviation: str
     date: date #  дата, на которую запрашивается курс
     rate: float # курс
 
     def __hash__(self) -> int:
-        return hash(self.cur_abbreviation)
+        return hash(self.currency_abbreviation)
 
     def __eq__(self, other) -> bool:
         if not isinstance(other, RateDomain):
             return False
-        return self.cur_abbreviation == other.cur_abbreviation
+        return self.currency_abbreviation == other.currency_abbreviation
