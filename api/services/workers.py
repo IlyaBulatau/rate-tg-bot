@@ -1,7 +1,8 @@
-from apps.currencies.repos import CurrencyRepository
-from apps.currencies.serializers import CurrencySerializer
+from apps.currencies.repos import CurrencyRepository, RateRepository
+from apps.currencies.models import Currency
+from apps.currencies.serializers import CurrencySerializer, RateSerializer
 from services.parser.parsers import CurrencyParser, RateParser, BaseParser
-from api.services.domains import CurrencyDomain, RateDomain
+from services.domains import CurrencyDomain, RateDomain
 
 
 class FillDatabaseCurrencyWorker:
@@ -10,8 +11,7 @@ class FillDatabaseCurrencyWorker:
         currencies: list[CurrencyDomain] = self.get_currencies()
         serializer = CurrencySerializer(data=[currency.to_dict() for currency in currencies], many=True)
         
-        if not serializer.is_valid():
-            raise Exception()
+        serializer.is_valid(raise_exception=True)
 
         CurrencyRepository().create_many(serializer.data)
 
@@ -22,9 +22,26 @@ class FillDatabaseCurrencyWorker:
 
 class FillDatabaseRateWorker:
 
-    def fill(self, cur_abbreviation: int):
-        ...
+    def fill(self, cur_abbreviation_array: list[str]):
+        rates: list[RateDomain] = self.get_rates(cur_abbreviation_array)
+        serializer = RateSerializer(data=[rate.to_dict() for rate in rates], many=True)
+
+        serializer.is_valid(raise_exception=True)
+
+        RateRepository().create_many(self._prepare_data_for_save(serializer.data))
     
-    def get_rates(self, cur_abbreviation: int, parser: BaseParser = RateParser) -> list[RateDomain]:
-        rates = parser().parse(cur_abbreviation)
+    def _prepare_data_for_save(self, data: list[dict]) -> list[tuple[Currency, dict]]:
+        save_data = []
+        
+        for item in data:
+            currency_abbreviation: str = item.pop("currency_abbreviation")
+            currency_obj: Currency = CurrencyRepository().get_by_abbreviation(currency_abbreviation)
+            save_data.append((currency_obj, item))
+        
+        return save_data
+
+
+
+    def get_rates(self, cur_abbreviation_array: list[str], parser: BaseParser = RateParser) -> list[RateDomain]:
+        rates = parser().parse_many(cur_abbreviation_array)
         return rates
