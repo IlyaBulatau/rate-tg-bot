@@ -1,7 +1,8 @@
 import requests
 from abc import ABC, abstractmethod
 
-from api.services.domains import CurrencyDomain, RateDomain
+from apps.utils.utils import from_iso_str_to_date
+from services.domains import CurrencyDomain, RateDomain
 
 
 class BaseParser(ABC):
@@ -55,13 +56,15 @@ class RateParser(BaseParser):
         with requests.Session() as session:
             for cur_abbreviation in array_cur_abbreviation:
                 response = session.get(self.get_url.format(cur_abbreviation=cur_abbreviation))
-                rate_set.append(self._prepare_data(response.json()))
+                data = self._prepare_data(response.json())
+                if data.currency_abbreviation:
+                    rate_set.append(data)
         
         return rate_set
 
     def _prepare_data(self, data: dict) -> RateDomain:
         return RateDomain(
-            cur_abbreviation=data.get("Cur_Abbreviation"),
-            date=data.get("Date"),
+            currency_abbreviation=data.get("Cur_Abbreviation"),
+            date=from_iso_str_to_date(date) if (date := data.get("Date")) else date,
             rate=data.get("Cur_OfficialRate")
         )
