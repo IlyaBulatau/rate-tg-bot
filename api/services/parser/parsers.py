@@ -1,7 +1,7 @@
 import requests
 from abc import ABC, abstractmethod
 
-from services.parser.domains import CurrencyDomain, RateDomain
+from api.services.domains import CurrencyDomain, RateDomain
 
 
 class BaseParser(ABC):

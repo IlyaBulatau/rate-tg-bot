@@ -1,7 +1,7 @@
 from apps.currencies.repos import CurrencyRepository
 from apps.currencies.serializers import CurrencySerializer
 from services.parser.parsers import CurrencyParser, RateParser, BaseParser
-from services.parser.domains import CurrencyDomain, RateDomain
+from api.services.domains import CurrencyDomain, RateDomain
 
 
 class FillDatabaseCurrencyWorker:

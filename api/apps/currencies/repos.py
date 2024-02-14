@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 
 from django.db import models
 
-from services.parser.domains import CurrencyDomain, RateDomain
+from api.services.domains import CurrencyDomain, RateDomain
 from .models import Currency, Rate
 
 
