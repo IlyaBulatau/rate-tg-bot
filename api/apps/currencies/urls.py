@@ -7,5 +7,4 @@ app_name = "currencies"
 
 urlpatterns = [
     path("", api_get_currencies_view, name="list"),
-
 ]

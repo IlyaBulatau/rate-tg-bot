@@ -14,6 +14,6 @@ def fill_rate_table_data():
 celery_app.conf.beat_schedule = {
     "parse_and_save_rates": {
         "task": "apps.currencies.tasks.fill_rate_table_data",
-        "schedule": crontab(hour=12, minute=3)
+        "schedule": crontab(hour=12, minute=3),
     }
 }

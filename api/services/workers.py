@@ -9,13 +9,17 @@ class FillDatabaseCurrencyWorker:
 
     def fill(self):
         currencies: list[CurrencyDomain] = self.get_currencies()
-        serializer = CurrencySerializer(data=[currency.to_dict() for currency in currencies], many=True)
-        
+        serializer = CurrencySerializer(
+            data=[currency.to_dict() for currency in currencies], many=True
+        )
+
         serializer.is_valid(raise_exception=True)
 
         CurrencyRepository().create_many(serializer.data)
 
-    def get_currencies(self, parser: BaseParser = CurrencyParser) -> list[CurrencyDomain]:
+    def get_currencies(
+        self, parser: BaseParser = CurrencyParser
+    ) -> list[CurrencyDomain]:
         currencies = parser().parse()
         return currencies
 
@@ -29,19 +33,21 @@ class FillDatabaseRateWorker:
         serializer.is_valid(raise_exception=True)
 
         RateRepository().create_many(self._prepare_data_for_save(serializer.data))
-    
+
     def _prepare_data_for_save(self, data: list[dict]) -> list[tuple[Currency, dict]]:
         save_data = []
-        
+
         for item in data:
             currency_abbreviation: str = item.pop("currency_abbreviation")
-            currency_obj: Currency = CurrencyRepository().get_by_abbreviation(currency_abbreviation)
+            currency_obj: Currency = CurrencyRepository().get_by_abbreviation(
+                currency_abbreviation
+            )
             save_data.append((currency_obj, item))
-        
+
         return save_data
 
-
-
-    def get_rates(self, cur_abbreviation_array: list[str], parser: BaseParser = RateParser) -> list[RateDomain]:
+    def get_rates(
+        self, cur_abbreviation_array: list[str], parser: BaseParser = RateParser
+    ) -> list[RateDomain]:
         rates = parser().parse_many(cur_abbreviation_array)
         return rates

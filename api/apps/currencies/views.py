@@ -9,8 +9,13 @@ from rest_framework.serializers import BaseSerializer
 
 
 class CurrencyView(APIView):
-    
-    def __init__(self, repository: BaseRepository = CurrencyRepository, serializer: BaseSerializer =  CurrencySerializerWithoutId, **kwargs) -> None:
+
+    def __init__(
+        self,
+        repository: BaseRepository = CurrencyRepository,
+        serializer: BaseSerializer = CurrencySerializerWithoutId,
+        **kwargs
+    ) -> None:
         self._repository = repository
         self._serializer = serializer
         super().__init__(**kwargs)
@@ -19,5 +24,6 @@ class CurrencyView(APIView):
         currencies: QuerySet[Currency] = self._repository().get_all()
         serialize = self._serializer(instance=currencies, many=True)
         return Response(data=serialize.data, status=status.HTTP_200_OK)
+
 
 api_get_currencies_view = CurrencyView.as_view()
