@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 
 from django.db import models
 
-from api.services.domains import CurrencyDomain, RateDomain
+from services.domains import CurrencyDomain, RateDomain
 from .models import Currency, Rate
 
 
@@ -18,7 +18,7 @@ class BaseRepository(ABC):
         ...
     
     @abstractmethod
-    def get(self) -> models.Model:
+    def get_all(self) -> models.Model:
         ...
     
     @abstractmethod
@@ -41,8 +41,8 @@ class ModelRepository(BaseRepository):
     def update(self) -> models.Model:
         ...
     
-    def get(self) -> models.Model:
-        ...
+    def get_all(self) -> models.Model:
+        return self.model.objects.all()
     
     def delete(self) -> None:
         ...
@@ -51,6 +51,23 @@ class ModelRepository(BaseRepository):
 class CurrencyRepository(ModelRepository):
     model = Currency
 
+    def get_currencies_abbr(self) -> list[str]:
+        result = self.model.objects.values_list("abbreviation", flat=True)
+        return list(result)
+
+    def get_by_abbreviation(self, abbreviation: str) -> Currency:
+        return self.model.objects.filter(abbreviation=abbreviation).first()
+
 class RateRepository(ModelRepository):
     model = Rate
 
+    def create_many(self, datas: list[tuple[Currency, dict]]) -> None:
+        save_data = [
+            self.model(
+                currency_abbreviation=data[0],
+                **data[1]
+            ) for data in datas
+            ]
+        self.model.objects.bulk_create(save_data)
+
+    
