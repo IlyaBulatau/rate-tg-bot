@@ -41,7 +41,7 @@ class ModelRepository(BaseRepository):
     def update(self) -> models.Model:
         ...
     
-    def get_all(self) -> models.Model:
+    def get_all(self) -> models.QuerySet[models.Model]:
         return self.model.objects.all()
     
     def delete(self) -> None:
@@ -50,6 +50,9 @@ class ModelRepository(BaseRepository):
 
 class CurrencyRepository(ModelRepository):
     model = Currency
+
+    def get_all(self) -> models.QuerySet[models.Model]:
+        return self.model.objects.only("abbreviation", "name_ru", "name_eng", "scale").all()
 
     def get_currencies_abbr(self) -> list[str]:
         result = self.model.objects.values_list("abbreviation", flat=True)

@@ -24,3 +24,13 @@ class RateSerializer(CustomModelSerializer):
     class Meta:
         model = Rate
         fields = "__all__"
+
+class CurrencySerializerWithoutId(CustomModelSerializer):
+
+    class Meta(CurrencySerializer.Meta):
+        fields = (
+            "abbreviation",
+            "name_ru",
+            "name_eng",
+            "scale",
+            )
