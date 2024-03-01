@@ -26,4 +26,5 @@ class CurrencyView(APIView):
         return Response(data=serialize.data, status=status.HTTP_200_OK)
 
 
+
 api_get_currencies_view = CurrencyView.as_view()
