@@ -1,9 +1,11 @@
 import requests
 from abc import ABC, abstractmethod
-from datetime import date, datetime
-from dateutil import parser
+from datetime import datetime
 
-from services.domains import CurrencyDomain, RateDomain
+from utils import from_iso_str_to_date
+from domains import CurrencyDomain, RateDomain
+import conf
+from kafka.producer import KafkaProducer
 
 
 class BaseParser(ABC):
@@ -75,6 +77,11 @@ class RateParser(BaseParser):
         )
 
 
-def from_iso_str_to_date(str_date: str) -> date:
-    result: datetime = parser.isoparse(str_date)
-    return result.date()
+if __name__ == "__main__":
+    
+    while True:
+        # if datetime.now().time() == conf.UPDATE_CURRENCY_TIME:
+            data = CurrencyParser().parse()
+            data_bytes = str([d.to_dict() for d in data]).encode()
+            KafkaProducer().send(conf.KAFKA_CURRENCY_TOPIC, data_bytes)
+            break
