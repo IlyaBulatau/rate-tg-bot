@@ -76,12 +76,24 @@ class RateParser(BaseParser):
             rate=data.get("Cur_OfficialRate"),
         )
 
+    @staticmethod
+    def collect_abbreviations(data: list[CurrencyDomain]) -> list[str]:
+        return [item.abbreviation for item in data]
+
 
 if __name__ == "__main__":
+    currency_parser = CurrencyParser()
+    rate_parser = RateParser()
+    producer = KafkaProducer()
     
     while True:
         # if datetime.now().time() == conf.UPDATE_CURRENCY_TIME:
-            data = CurrencyParser().parse()
-            data_bytes = str([d.to_dict() for d in data]).encode()
-            KafkaProducer().send(conf.KAFKA_CURRENCY_TOPIC, data_bytes)
+            currency_data = currency_parser.parse()
+            rate_data = rate_parser.parse_many(rate_parser.collect_abbreviations(currency_data))
+
+            currency_bytes = str([data.to_dict() for data in currency_data]).encode()
+            rate_bytes = str([data.to_dict() for data in rate_data]).encode()
+            
+            producer.send(conf.KAFKA_CURRENCY_TOPIC, currency_bytes)
+            producer.send(conf.KAFKA_RATE_TOPIC, rate_bytes)
             break

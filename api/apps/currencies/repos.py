@@ -34,8 +34,6 @@ class ModelRepository(BaseRepository):
     def create_many(self, datas: list[dict]) -> None:
         self.model.objects.bulk_create([self.model(**data) for data in datas])
 
-    def update(self) -> models.Model: ...
-
     def get_all(self) -> models.QuerySet[models.Model]:
         return self.model.objects.all()
 
@@ -57,6 +55,13 @@ class CurrencyRepository(ModelRepository):
     def get_by_abbreviation(self, abbreviation: str) -> Currency:
         return self.model.objects.filter(abbreviation=abbreviation).first()
 
+    def update(self, data: dict) -> models.Model:
+        ...
+
+    def update_many(self, datas: list[dict]) -> None:
+        self.model.objects.bulk_update()
+    
+    
 
 class RateRepository(ModelRepository):
     model = Rate
