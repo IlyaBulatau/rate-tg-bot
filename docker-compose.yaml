@@ -14,42 +14,6 @@ services:
       - ./api/:/home/code
     depends_on:
       - db
-      - redis
-    
-  celery:
-    build:
-      context: api
-    container_name: celery
-    entrypoint: celery -A settings:celery_app worker
-    env_file:
-      - .env.dev
-    depends_on:
-      - api
-      - redis
-  
-  beater:
-    build:
-      context: api
-    container_name: beater
-    entrypoint: celery -A settings:celery_app beat
-    env_file:
-      - .env.dev
-    depends_on:
-      - celery
-      - redis
-
-  flower:
-    build:
-      context: api
-    container_name: flower
-    entrypoint: celery -A settings:celery_app flower
-    env_file:
-      - .env.dev
-    ports:
-      - "5555:5555"
-    depends_on:
-      - celery
-      - redis
 
   db:
     image: postgres:14-alpine
@@ -82,16 +46,7 @@ services:
     depends_on:
       - db
   
-  redis:
-    image: redis:alpine
-    container_name: redis
-    ports:
-      - "6380:6379"
-    command: redis-server
-    volumes:
-      - redis_data:/data
 
 volumes:
   postgres_data:
   pgadmin_data:
-  redis_data:

@@ -1,7 +1,8 @@
 import requests
 from abc import ABC, abstractmethod
+from datetime import date, datetime
+from dateutil import parser
 
-from apps.utils.utils import from_iso_str_to_date
 from services.domains import CurrencyDomain, RateDomain
 
 
@@ -72,3 +73,8 @@ class RateParser(BaseParser):
             date=from_iso_str_to_date(date) if (date := data.get("Date")) else date,
             rate=data.get("Cur_OfficialRate"),
         )
+
+
+def from_iso_str_to_date(str_date: str) -> date:
+    result: datetime = parser.isoparse(str_date)
+    return result.date()

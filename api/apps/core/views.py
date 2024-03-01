@@ -6,4 +6,4 @@ from django.http import HttpRequest
 class HealthCheckView(APIView):
 
     def get(self, request: HttpRequest, *args, **kwargs):
-        return Response(data={"Status": "OK"})
+        return Response(data="pong")

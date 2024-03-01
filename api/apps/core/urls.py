@@ -4,4 +4,4 @@ from .views import HealthCheckView
 
 app_name = "core"
 
-urlpatterns = [path("healtcheck/", HealthCheckView.as_view())]
+urlpatterns = [path("ping/", HealthCheckView.as_view())]
