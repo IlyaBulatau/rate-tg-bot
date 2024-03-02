@@ -1,6 +1,8 @@
 from confluent_kafka import Consumer, KafkaException
 
 from typing import Callable
+import sys
+import datetime
 
 from apps.core.services.kafka.conf import Topic, CONFIG
 from apps.core.services.use_case import update_currencies, update_rates
@@ -39,10 +41,12 @@ class KafkaConsumer:
                     continue
 
                 if message.error():
+                    sys.stdout.writable(f"Ошибка при чтении данных с топика {message.topic()}")
                     raise KafkaException(message.error())
                 else:
                     process = self.processs_definer.define(message.topic())
                     process(message.value())
+                    sys.stdout.write(f"Курс обновлен, Время: {datetime.datetime.now().strftime("%Y-%B-%d %H:%M")}")
         finally:
             self.__consumer.close()
 

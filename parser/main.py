@@ -1,6 +1,5 @@
 import requests
 from abc import ABC, abstractmethod
-from datetime import datetime
 
 from utils import from_iso_str_to_date
 from domains import CurrencyDomain, RateDomain

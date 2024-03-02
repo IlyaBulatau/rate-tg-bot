@@ -5,10 +5,10 @@ from apps.core.services.kafka.serializers import BaseKafkaSerializer, CurrencyKa
 def update_currencies(
         currencies_data: bytes,
         serializer: BaseKafkaSerializer = CurrencyKafkaSerializer,
-        repo: BaseRepository = CurrencyRepository
+        repo: BaseRepository = CurrencyRepository()
         ):
     currencies: list[dict] = serializer(currencies_data).serialize()
-    # repo.update_many(currencies)
+    repo.update_many(currencies)
 
 def update_rates(
         rate_data: bytes,
