@@ -1,10 +1,24 @@
 version: '3.7'
 services:
 
+  bot:
+    build:
+      context: bot
+    container_name: bot
+    hostname: bot
+    entrypoint: python3 -u main.py
+    env_file:
+      - .env.dev
+    ports:
+      - "8080:${BOT_PORT}"
+    volumes:
+      - ./bot/:/home/code
+
   api:
     build:
       context: api
     container_name: api
+    hostname: api
     entrypoint: python3 manage.py runserver 0.0.0.0:8000
     env_file:
       - .env.dev

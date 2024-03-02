@@ -89,7 +89,7 @@ if __name__ == "__main__":
     producer = KafkaProducer()
     
     while True:
-        time.sleep(0.5)
+        time.sleep(1)
         dt_now = datetime.now(pytz.timezone("Europe/Minsk")).time()
         if  dt_now.hour ==  conf.UPDATE_CURRENCY_TIME.hour and dt_now.minute == conf.UPDATE_CURRENCY_TIME.minute:
             currency_data = currency_parser.parse()
