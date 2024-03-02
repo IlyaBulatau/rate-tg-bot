@@ -2,6 +2,7 @@ import requests
 from abc import ABC, abstractmethod
 from datetime import datetime
 import pytz
+import time
 
 from utils import from_iso_str_to_date
 from domains import CurrencyDomain, RateDomain
@@ -88,6 +89,7 @@ if __name__ == "__main__":
     producer = KafkaProducer()
     
     while True:
+        time.sleep(0.5)
         dt_now = datetime.now(pytz.timezone("Europe/Minsk")).time()
         if  dt_now.hour ==  conf.UPDATE_CURRENCY_TIME.hour and dt_now.minute == conf.UPDATE_CURRENCY_TIME.minute:
             currency_data = currency_parser.parse()
