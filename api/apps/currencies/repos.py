@@ -79,7 +79,13 @@ class RateRepository(ModelRepository):
         self.model.objects.bulk_create(save_data)
 
     def update(self, data: dict) -> models.Model:
-        self.model.objects.update()
+        currency_abbreviation = data.pop("currency_abbreviation")
+        self.model.objects.update_or_create(
+            currency_abbreviation=currency_abbreviation,
+            defaults={**data}
+        )
 
     def update_many(self, datas: list[dict]) -> None:
-        self.model.objects.bulk_update()
+        with transaction.atomic(durable=True):
+            for obj in datas:
+                self.update(obj)

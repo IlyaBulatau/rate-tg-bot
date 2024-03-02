@@ -13,7 +13,7 @@ def update_currencies(
 def update_rates(
         rate_data: bytes,
         serializer: BaseKafkaSerializer = RateKafkaSerializer,
-        repo: BaseRepository = RateRepository
+        repo: BaseRepository = RateRepository()
         ):
     rates: list[dict] = serializer(rate_data).serialize()
-    # repo.update_many(currencies)
+    repo.update_many(rates)

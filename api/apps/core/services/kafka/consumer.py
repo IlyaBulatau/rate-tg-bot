@@ -46,7 +46,7 @@ class KafkaConsumer:
                 else:
                     process = self.processs_definer.define(message.topic())
                     process(message.value())
-                    sys.stdout.write(f"Курс обновлен, Время: {datetime.datetime.now().strftime("%Y-%B-%d %H:%M")}")
+                    sys.stdout.write(f"Курс обновлен, Время: {datetime.datetime.now().strftime('%Y-%B-%d %H:%M')}\n")
         finally:
             self.__consumer.close()
 
