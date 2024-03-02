@@ -9,6 +9,9 @@ class Currency(models.Model):
     name_eng = models.CharField(verbose_name="Имя на английском", max_length=128)
     scale = models.IntegerField(verbose_name="Количество единиц валюты")
 
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
     class Meta:
         db_table = "currencies"
         indexes = [
@@ -24,6 +27,9 @@ class Currency(models.Model):
 class Rate(models.Model):
     date = models.DateField(verbose_name="Дата установки курса")
     rate = models.DecimalField(verbose_name="Курс", max_digits=8, decimal_places=5)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     currency_abbreviation = models.ForeignKey(
         Currency,
