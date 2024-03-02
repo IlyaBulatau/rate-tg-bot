@@ -16,4 +16,4 @@ def update_rates(
         repo: BaseRepository = RateRepository()
         ):
     rates: list[dict] = serializer(rate_data).serialize()
-    repo.update_many(rates)
+    repo.create_many(rates)

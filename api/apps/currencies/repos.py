@@ -12,9 +12,6 @@ class BaseRepository(ABC):
     def create(self) -> models.Model: ...
 
     @abstractmethod
-    def update(self) -> models.Model: ...
-
-    @abstractmethod
     def get_all(self) -> models.Model: ...
 
     @abstractmethod
@@ -72,20 +69,12 @@ class CurrencyRepository(ModelRepository):
 class RateRepository(ModelRepository):
     model = Rate
 
-    def create_many(self, datas: list[tuple[Currency, dict]]) -> None:
+    def create_many(self, datas: list[dict]) -> None:
+        for obj in datas:
+            currency_abbreviation = obj.pop("currency_abbreviation")
+            currency = Currency.objects.filter(abbreviation=currency_abbreviation).first()
+            obj["currency_abbreviation"] = currency
         save_data = [
-            self.model(currency_abbreviation=data[0], **data[1]) for data in datas
+            self.model(**data) for data in datas
         ]
         self.model.objects.bulk_create(save_data)
-
-    def update(self, data: dict) -> models.Model:
-        currency_abbreviation = data.pop("currency_abbreviation")
-        self.model.objects.update_or_create(
-            currency_abbreviation=currency_abbreviation,
-            defaults={**data}
-        )
-
-    def update_many(self, datas: list[dict]) -> None:
-        with transaction.atomic(durable=True):
-            for obj in datas:
-                self.update(obj)
