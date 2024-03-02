@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 
-from django.db import models
+from django.db import models, transaction
 
 from .models import Currency, Rate
 
@@ -56,10 +56,16 @@ class CurrencyRepository(ModelRepository):
         return self.model.objects.filter(abbreviation=abbreviation).first()
 
     def update(self, data: dict) -> models.Model:
-        ...
+        abbreviation = data.pop("abbreviation")
+        self.model.objects.update_or_create(
+            abbreviation=abbreviation,
+            defaults={**data}
+        )
 
     def update_many(self, datas: list[dict]) -> None:
-        self.model.objects.bulk_update()
+        with transaction.atomic(durable=True):
+            for obj in datas:
+                self.update(obj)
     
     
 
@@ -71,3 +77,9 @@ class RateRepository(ModelRepository):
             self.model(currency_abbreviation=data[0], **data[1]) for data in datas
         ]
         self.model.objects.bulk_create(save_data)
+
+    def update(self, data: dict) -> models.Model:
+        self.model.objects.update()
+
+    def update_many(self, datas: list[dict]) -> None:
+        self.model.objects.bulk_update()
