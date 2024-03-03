@@ -12,7 +12,7 @@ bot = Bot(token=conf.BOT_TOKEN)
 app = web.Application()
 
 async def on_startup(bot: Bot):
-    await bot.set_webhook(f"{conf.PROXY_SERVER}/{conf.WEBHOOK_URL}/", secret_token=conf.SECRET_TOKEN)
+    await bot.set_webhook(f"{conf.PROXY_SERVER}/{conf.WEBHOOK_URL}/", secret_token=conf.SECRET_TOKEN, drop_pending_updates=True)
 
 async def handler_webhook(request):
     update_data = await request.json()
