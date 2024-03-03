@@ -11,3 +11,10 @@ currency_today_button = InlineKeyboardButton(
         ).pack()
     )
 
+abbreviation_currency_button = lambda abbreviation: InlineKeyboardButton(
+    text=abbreviation,
+    callback_data=UserCallbackFactory(
+        action=Action.CLICK.value,
+        event=abbreviation
+    ).pack()
+)
