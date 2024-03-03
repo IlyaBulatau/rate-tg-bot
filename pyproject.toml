@@ -19,6 +19,7 @@ flower = "^2.0.1"
 black = "^24.2.0"
 confluent-kafka = "^2.3.0"
 pytz = "^2024.1"
+gunicorn = "^21.2.0"
 
 
 [build-system]
