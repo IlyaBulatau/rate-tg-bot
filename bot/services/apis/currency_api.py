@@ -25,10 +25,12 @@ class APICurrencyClient(APIClient):
     HEADERS = {"Authorization": "Bearer "+conf.API_AUTH_TOKEN}
     
 
-    async def get_currency(self, query_params: dict = None, endpoint: str ="/currencies/") -> list[dict] | dict:
+    async def get_rate(self, abbreviation: str, query_params: dict = None) -> list[dict] | dict:
+        endpoint = f"/currencies/rates/{abbreviation}"
         url = self.BASE_URL+endpoint
         session = await self.async_session().__anext__()
 
         async with session.get(url, headers=self.HEADERS) as response:
-            return await response.json()
-        
+            if response.status == 200:
+                return await response.json()
+            return None

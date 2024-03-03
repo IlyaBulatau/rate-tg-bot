@@ -4,7 +4,9 @@ from aiogram.types import CallbackQuery
 from utils.callbacks import UserCallbackFactory, Event
 from domains.currencies import AvalibaleCurrency
 from utils.keyboards import currency_callback_keyboard
-from services.use_case import get_all_currency
+from services.use_case import get_rate_by_abbreviation
+from domains.dto import ExchangeRate
+from events.answers import answer_rate_today
 
 
 router = Router()
@@ -19,5 +21,6 @@ async def callback_get_currency_today(callback: CallbackQuery, callback_data: Us
 @router.callback_query(UserCallbackFactory.filter(F.event.in_(AvalibaleCurrency.to_list())))
 async def callback_abbreviations(callback: CallbackQuery, callback_data: UserCallbackFactory, bot: Bot):
     await callback.answer()
-    # r = await get_all_currency()
-    await callback.message.answer(text="HELLO")
+    rate: ExchangeRate = await get_rate_by_abbreviation(callback_data.event)
+    if rate:
+        await answer_rate_today(callback, rate)

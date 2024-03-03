@@ -1,15 +1,13 @@
 from services.apis.currency_api import APICurrencyClient
+from domains.currencies import AvalibaleCurrency
+from domains.dto import ExchangeRate
 
-async def get_all_currency(
-        _filters: dict = None,
-        api_client: APICurrencyClient = APICurrencyClient,
-    ):
-    client = api_client()
-    currencies = await client.get_currency(_filters)
-    return currencies
 
-async def get_currency_by_abbreviation(
-        abbreviation: list[str] | str,
+async def get_rate_by_abbreviation(
+        abbreviation: AvalibaleCurrency,
         api_client: APICurrencyClient = APICurrencyClient,
         ):
-    ...
+    client = api_client()
+    data = await client.get_rate(abbreviation)
+    rate = ExchangeRate(**data)
+    return rate
