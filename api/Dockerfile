@@ -1,9 +1,13 @@
-FROM python:3.10.6-slim
+FROM python:3.10.6-slim as builder
 
-WORKDIR /home/code
+WORKDIR /install
 
-ENV PYTHONUNBUFFERED=1 \
-    PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
+
+COPY requirements.txt /requirements.txt
+
+RUN pip install --prefix=/install -r /requirements.txt
 
 RUN apt-get update && apt-get install --no-install-recommends --no-install-suggests -y \
         gcc \
@@ -11,19 +15,17 @@ RUN apt-get update && apt-get install --no-install-recommends --no-install-sugge
         libpq-dev && \
         rm -rf /var/lib/apt/lists/*
 
-COPY requirements.txt .
 
-RUN --mount=type=cache,target=/root/.cache/pip/ \
-    pip install --upgrade pip && \
-    pip install -r requirements.txt
+FROM python:3.10.6-slim
 
-COPY . .
+COPY --from=builder /install /usr/local
+
+WORKDIR /home/code
 
 EXPOSE 8000
 
-# RUN groupadd -r app-group && \
-#     useradd -r -g app-group admin && \
-#     chmod 766 -R /home/code && \
-#     chmod 775 /home/code
+RUN groupadd -r app-group && \
+    useradd -r -g app-group admin && \
+    chmod 775 -R /home/code
 
-# USER admin
+USER admin
