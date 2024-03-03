@@ -1,6 +1,8 @@
-from .repos import CurrencyRepository, BaseRepository
-from .models import Currency
-from .serializers import CurrencySerializerWithoutId
+from .repos import CurrencyRepository, BaseRepository, RateRepository
+from .models import Currency, Rate
+from .serializers import CurrencySerializerWithoutId, RateViewSerializer
+
+from datetime import date
 
 from django.db.models import QuerySet
 from django.http import HttpRequest
@@ -28,3 +30,26 @@ class CurrencyView(APIView):
 
 
 api_get_currencies_view = CurrencyView.as_view()
+
+
+class RateView(APIView):
+    
+    def __init__(
+            self,
+            repository: BaseRepository = RateRepository,
+            serializer: BaseSerializer = RateViewSerializer,
+            **kwargs
+    ) -> None:
+        self._repository = repository
+        self._serializer = serializer
+        super().__init__(**kwargs)
+    
+    def get(self, request: HttpRequest, *args, **kwargs):
+        abbreviation = kwargs.get("abbreviation")
+        if abbreviation:
+            rate: Rate = self._repository().get({"currency_abbreviation": abbreviation, "date": date.today()})
+            serialize = self._serializer(instance=rate)
+            return Response(data=serialize.data, status=status.HTTP_200_OK)
+    
+
+api_get_rates_view = RateView.as_view()

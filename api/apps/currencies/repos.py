@@ -78,3 +78,7 @@ class RateRepository(ModelRepository):
             self.model(**data) for data in datas
         ]
         self.model.objects.bulk_create(save_data)
+    
+    def get(self, _filters: dict) -> Rate:
+        result = self.model.objects.filter(**_filters).first()
+        return result
