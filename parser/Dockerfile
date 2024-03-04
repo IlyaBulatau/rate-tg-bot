@@ -14,6 +14,9 @@ FROM python:3.10.6-slim
 COPY --from=builder /install /usr/local
 
 WORKDIR /home/code
+
+COPY . .
+
 EXPOSE 8000
 
 RUN groupadd -r app-group && \

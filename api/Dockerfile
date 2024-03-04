@@ -22,6 +22,8 @@ COPY --from=builder /install /usr/local
 
 WORKDIR /home/code
 
+COPY . .
+
 EXPOSE 8000
 
 RUN groupadd -r app-group && \
