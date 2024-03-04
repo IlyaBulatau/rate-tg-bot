@@ -8,14 +8,8 @@ services:
     restart: unless-stopped
     hostname: bot
     entrypoint: python3 -u main.py
-    environment:
-      - BOT_TOKEN=${BOT_TOKEN}
-      - WEBHOOK_URL=${WEBHOOK_URL}
-      - PROXY_SERVER=${PROXY_SERVER}
-      - BOT_HOST=${BOT_HOST}
-      - BOT_PORT=${BOT_PORT}
-      - SECRET_TOKEN=${SECRET_TOKEN}
-      - API_SERVICE_URL=${API_SERVICE_URL}
+    env_file:
+      - .env
     ports:
       - "8080:${BOT_PORT}"
     depends_on:
@@ -28,16 +22,8 @@ services:
     restart: unless-stopped
     hostname: api
     entrypoint: python3 manage.py runserver 0.0.0.0:8000
-    environment:
-      - SECRET_KEY=${SECRET_KEY}
-      - DATABASE_NAME=${DATABASE_NAME}
-      - DATABASE_USER=${DATABASE_USER}
-      - DATABASE_PASSWORD=${DATABASE_PASSWORD}
-      - DATABASE_PORT=${DATABASE_PORT}
-      - DATABASE_HOST=${DATABASE_HOST}
-      - AUTH_TOKEN=${AUTH_TOKEN}
-      - KAFKA_CURRENCY_TOPIC=${KAFKA_CURRENCY_TOPIC}
-      - KAFKA_RATE_TOPIC=${KAFKA_RATE_TOPIC}
+    env_file:
+      - .env
 
     ports:
       - "8000:8000"
@@ -51,9 +37,8 @@ services:
     container_name: parser
     restart: unless-stopped
     entrypoint: python3 -u main.py
-    environment:
-      - KAFKA_CURRENCY_TOPIC=${KAFKA_CURRENCY_TOPIC}
-      - KAFKA_RATE_TOPIC=${KAFKA_RATE_TOPIC}
+    env_file:
+      - .env
     depends_on:
       - kafka
     volumes:
