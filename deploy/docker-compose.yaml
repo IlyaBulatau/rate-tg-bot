@@ -1,0 +1,153 @@
+version: '3.7'
+services:
+
+  bot:
+    build:
+      context: bot
+    container_name: bot
+    restart: unless-stopped
+    hostname: bot
+    entrypoint: python3 -u main.py
+    environment:
+      - BOT_TOKEN=${BOT_TOKEN}
+      - WEBHOOK_URL=${WEBHOOK_URL}
+      - PROXY_SERVER=${PROXY_SERVER}
+      - BOT_HOST=${BOT_HOST}
+      - BOT_PORT=${BOT_PORT}
+      - SECRET_TOKEN=${SECRET_TOKEN}
+      - API_SERVICE_URL=${API_SERVICE_URL}
+    ports:
+      - "8080:${BOT_PORT}"
+    depends_on:
+      - proxy
+
+  api:
+    build:
+      context: api
+    container_name: api
+    restart: unless-stopped
+    hostname: api
+    entrypoint: python3 manage.py runserver 0.0.0.0:8000
+    environment:
+      - SECRET_KEY=${SECRET_KEY}
+      - DEBUG=${DEBUG}
+      - DATABASE_NAME=${DATABASE_NAME}
+      - DATABASE_USER=${DATABASE_USER}
+      - DATABASE_PASSWORD=${DATABASE_PASSWORD}
+      - DATABASE_PORT=${DATABASE_PORT}
+      - DATABASE_HOST=${DATABASE_HOST}
+      - AUTH_TOKEN=${AUTH_TOKEN}
+      - KAFKA_CURRENCY_TOPIC=${KAFKA_CURRENCY_TOPIC}
+      - KAFKA_RATE_TOPIC=${KAFKA_RATE_TOPIC}
+
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+      - kafka
+
+  parser:
+    build:
+      context: parser
+    container_name: parser
+    restart: unless-stopped
+    entrypoint: python3 -u main.py
+    environment:
+      - KAFKA_CURRENCY_TOPIC=${KAFKA_CURRENCY_TOPIC}
+      - KAFKA_RATE_TOPIC=${KAFKA_RATE_TOPIC}
+    depends_on:
+      - kafka
+    volumes:
+      - ./parser/:/home/code
+
+  proxy:
+    build:
+      context: deploy/nginx
+    container_name: proxy
+    volumes:
+      - ./deploy/nginx/default.conf:/etc/nginx/conf.d/default.conf
+      - ./deploy/certbot/conf:/etc/letsencrypt
+      - ./deploy/certbot/www:/var/www/certbot
+    ports:
+      - "80:80"
+      - "443:443"
+
+  certbot:
+    container_name: certbot
+    image: certbot/certbot:v1.17.0
+    restart: unless-stopped
+    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
+    volumes:
+      - ./deploy/certbot/conf:/etc/letsencrypt
+      - ./deploy/certbot/www:/var/www/certbot
+
+  zookeeper:
+    image: confluentinc/cp-zookeeper:5.4.0
+    hostname: zookeeper
+    container_name: zookeeper
+    restart: unless-stopped
+    ports:
+      - "2181:2181"
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    volumes:
+      - zookeeper_data:/var/lib/zookeeper/data
+
+  kafka:
+    image: confluentinc/cp-kafka:latest
+    hostname: kafka
+    container_name: kafka
+    restart: unless-stopped
+    depends_on:
+      - zookeeper
+    ports:
+      - 29092:29092
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092,PLAINTEXT_HOST://localhost:29092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+    volumes:
+      - kafka_data:/var/lib/kafka/data
+
+  db:
+    image: postgres:14-alpine
+    container_name: db
+    restart: unless-stopped
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_DB=${DATABASE_NAME}
+      - POSTGRES_USER=${DATABASE_USER}
+      - POSTGRES_PASSWORD=${DATABASE_PASSWORD}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U ${DATABASE_USER} -d ${DATABASE_NAME}']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+  pgadmin:
+    image: dpage/pgadmin4:7.2
+    container_name: pgadmin
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=admin@gmail.com
+      - PGADMIN_DEFAULT_PASSWORD=admin
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+    ports:
+      - "5050:80"
+    depends_on:
+      - db
+  
+
+volumes:
+  postgres_data:
+  pgadmin_data:
+  zookeeper_data:
+  kafka_data:
