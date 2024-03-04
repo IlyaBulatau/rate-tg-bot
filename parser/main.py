@@ -3,6 +3,7 @@ from abc import ABC, abstractmethod
 from datetime import datetime
 import pytz
 import time
+import sys
 
 from utils import from_iso_str_to_date
 from domains import CurrencyDomain, RateDomain
@@ -84,20 +85,25 @@ class RateParser(BaseParser):
 
 
 if __name__ == "__main__":
+    sys.stdout.write("Парсер поднялся")
     currency_parser = CurrencyParser()
     rate_parser = RateParser()
     producer = KafkaProducer()
-    
+
     while True:
         time.sleep(1)
         dt_now = datetime.now(pytz.timezone("Europe/Minsk")).time()
-        if  dt_now.hour ==  conf.UPDATE_CURRENCY_TIME.hour and dt_now.minute == conf.UPDATE_CURRENCY_TIME.minute:
+        if (
+            dt_now.hour == conf.UPDATE_CURRENCY_TIME.hour
+            and dt_now.minute == conf.UPDATE_CURRENCY_TIME.minute
+        ):
             currency_data = currency_parser.parse()
-            rate_data = rate_parser.parse_many(rate_parser.collect_abbreviations(currency_data))
+            rate_data = rate_parser.parse_many(
+                rate_parser.collect_abbreviations(currency_data)
+            )
 
             currency_bytes = str([data.to_dict() for data in currency_data]).encode()
             rate_bytes = str([data.to_dict() for data in rate_data]).encode()
-            
+
             producer.send(conf.KAFKA_CURRENCY_TOPIC, currency_bytes)
             producer.send(conf.KAFKA_RATE_TOPIC, rate_bytes)
-            break

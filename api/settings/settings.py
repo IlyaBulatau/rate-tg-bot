@@ -6,10 +6,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = ENV("SECRET_KEY")
 
-DEBUG = ENV("DEBUG")
+DEBUG = ENV("DEBUG", False)
 
 if DEBUG:
     ALLOWED_HOSTS = ["*"]
+else:
+    ALLOWED_HOSTS = ["http://bot:8000"]
 
 THIRD_PARTY_APPS = ["rest_framework"]
 
