@@ -28,5 +28,3 @@ jobs:
           script: |
             cd /home/code
             git pull
-            rm docker-compose.yaml
-            mv deploy/docker-compose.yaml .
