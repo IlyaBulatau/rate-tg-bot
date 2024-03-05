@@ -1,9 +1,8 @@
 from os import getenv as ENV
 from datetime import time
 
-
-KAFKA_CONFIG = {"bootstrap.servers": "kafka:9092"}
-KAFKA_CURRENCY_TOPIC = ENV("KAFKA_CURRENCY_TOPIC", "currency")
-KAFKA_RATE_TOPIC = ENV("KAFKA_RATE_TOPIC", "rate")
+BROKER_USER = ENV("BROKER_USER")
+BROKER_PASSWORD = ENV("BROKER_PASSWORD")
+QUEUE_CURRENCY = ENV("QUEUE_CURRENCY")
 
 UPDATE_CURRENCY_TIME = time(hour=12, minute=2)

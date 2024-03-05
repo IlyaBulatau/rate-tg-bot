@@ -8,7 +8,7 @@ import sys
 from utils import from_iso_str_to_date
 from domains import CurrencyDomain, RateDomain
 import conf
-from kafka.producer import KafkaProducer
+from broker.producer import BrokerProducer
 
 
 class BaseParser(ABC):
@@ -88,7 +88,7 @@ if __name__ == "__main__":
     sys.stdout.write("Парсер поднялся")
     currency_parser = CurrencyParser()
     rate_parser = RateParser()
-    producer = KafkaProducer()
+    producer = BrokerProducer()
 
     while True:
         time.sleep(3)
@@ -97,13 +97,14 @@ if __name__ == "__main__":
             dt_now.hour == conf.UPDATE_CURRENCY_TIME.hour
             and dt_now.minute == conf.UPDATE_CURRENCY_TIME.minute
         ):
-            currency_data = currency_parser.parse()
-            rate_data = rate_parser.parse_many(
+            currency_data: list[CurrencyDomain] = currency_parser.parse()
+            rate_data: list[RateDomain] = rate_parser.parse_many(
                 rate_parser.collect_abbreviations(currency_data)
             )
 
-            currency_bytes = str([data.to_dict() for data in currency_data]).encode()
-            rate_bytes = str([data.to_dict() for data in rate_data]).encode()
+            currency_bytes: bytes = str([data.to_dict() for data in currency_data]).encode()
+            rate_bytes: bytes = str([data.to_dict() for data in rate_data]).encode()
 
-            producer.send(conf.KAFKA_CURRENCY_TOPIC, currency_bytes)
-            producer.send(conf.KAFKA_RATE_TOPIC, rate_bytes)
+            producer.send("currency", currency_bytes)
+            producer.send("rate", rate_bytes)
+            sys.stdout.write(f"Данные отправились в очередь, Время: {dt_now}")
