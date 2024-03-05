@@ -1,5 +1,7 @@
 from aiohttp import ClientSession
 
+import sys
+
 import config as conf
 
 
@@ -33,4 +35,6 @@ class APICurrencyClient(APIClient):
         async with session.get(url, headers=self.HEADERS) as response:
             if response.status == 200:
                 return await response.json()
+            body = await response.text()
+            sys.stdout.write(str(body))
             return None
