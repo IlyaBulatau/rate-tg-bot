@@ -3,3 +3,4 @@
 .vscode
 __pycache__/
 certbot
+tasks.txt
