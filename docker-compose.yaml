@@ -19,7 +19,7 @@ services:
     container_name: api
     restart: unless-stopped
     hostname: api
-    entrypoint: python3 manage.py runserver 0.0.0.0:8000
+    entrypoint: bash -c "python3 manage.py migrate && python3 manage.py runserver 0.0.0.0:8000"
     env_file:
       - .env
     ports:
