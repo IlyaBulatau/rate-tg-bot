@@ -20,5 +20,6 @@ jobs:
           username: ${{ secrets.SERVER_USERNAME }}
           key: ${{ secrets.SSH_PRIVATE }}
           script: |
+            cd /home/code
             docker compose --env-file .env up --build -d
             
