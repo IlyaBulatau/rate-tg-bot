@@ -11,7 +11,7 @@ DEBUG = ENV("DEBUG", False)
 if DEBUG:
     ALLOWED_HOSTS = ["*"]
 else:
-    ALLOWED_HOSTS = ["http://bot:8000"]
+    ALLOWED_HOSTS = ["127.0.0.1", "localhost", "api"]
 
 THIRD_PARTY_APPS = ["rest_framework"]
 
