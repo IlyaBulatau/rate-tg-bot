@@ -22,12 +22,13 @@ services:
     entrypoint: python3 manage.py runserver 0.0.0.0:8000
     env_file:
       - .env
-
     ports:
       - "8000:8000"
     depends_on:
-      - db
-      - kafka
+      db:
+        condition: service_healthy
+      broker:
+        condition: service_healthy
 
   parser:
     build:
@@ -38,9 +39,8 @@ services:
     env_file:
       - .env
     depends_on:
-      - kafka
-    volumes:
-      - ./parser/:/home/code
+      broker:
+        condition: service_healthy
 
   proxy:
     build:
@@ -65,38 +65,21 @@ services:
       - ./deploy/certbot/conf:/etc/letsencrypt
       - ./deploy/certbot/www:/var/www/certbot
 
-  zookeeper:
-    image: confluentinc/cp-zookeeper:5.4.0
-    hostname: zookeeper
-    container_name: zookeeper
-    restart: unless-stopped
-    ports:
-      - "2181:2181"
+  broker:
+    image: rabbitmq:management
+    container_name: broker
     environment:
-      ZOOKEEPER_CLIENT_PORT: 2181
-      ZOOKEEPER_TICK_TIME: 2000
+      - RABBITMQ_DEFAULT_USER=${BROKER_USER}
+      - RABBITMQ_DEFAULT_PASS=${BROKER_PASSWORD}
     volumes:
-      - zookeeper_data:/var/lib/zookeeper/data
-
-  kafka:
-    image: confluentinc/cp-kafka:latest
-    hostname: kafka
-    container_name: kafka
-    restart: unless-stopped
-    depends_on:
-      - zookeeper
+      - rabbit_data:/var/lib/rabbitmq
     ports:
-      - 29092:29092
-    environment:
-      KAFKA_BROKER_ID: 1
-      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092,PLAINTEXT_HOST://localhost:29092
-      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
-      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
-      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
-      KAFKA_HEAP_OPTS: -Xmx256M -Xms256M
-    volumes:
-      - kafka_data:/var/lib/kafka/data
+      - "5673:5672"
+    healthcheck:
+      test: rabbitmq-diagnostics -q ping
+      interval: 10s
+      timeout: 10s
+      retries: 2
 
   db:
     image: postgres:14-alpine
@@ -119,5 +102,4 @@ services:
 
 volumes:
   postgres_data:
-  zookeeper_data:
-  kafka_data:
+  rabbit_data:

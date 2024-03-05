@@ -27,8 +27,10 @@ services:
     volumes:
       - ./api/:/home/code
     depends_on:
-      - db
-      - broker
+      db:
+        condition: service_healthy
+      broker:
+        condition: service_healthy
 
   parser:
     build:
