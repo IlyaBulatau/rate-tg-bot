@@ -47,7 +47,7 @@ class RateView(APIView):
     def get(self, request: HttpRequest, *args, **kwargs):
         abbreviation = kwargs.get("abbreviation")
         if abbreviation:
-            rate: Rate = self._repository().get({"currency_abbreviation": abbreviation, "date": date.today()})
+            rate: Rate = self._repository().get({"currency_abbreviation": abbreviation})
             serialize = self._serializer(instance=rate)
             return Response(data=serialize.data, status=status.HTTP_200_OK)
     

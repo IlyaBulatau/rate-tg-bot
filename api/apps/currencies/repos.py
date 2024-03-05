@@ -80,5 +80,5 @@ class RateRepository(ModelRepository):
         self.model.objects.bulk_create(save_data)
     
     def get(self, _filters: dict) -> Rate:
-        result = self.model.objects.filter(**_filters).first()
+        result = self.model.objects.filter(**_filters).latest("date")
         return result
