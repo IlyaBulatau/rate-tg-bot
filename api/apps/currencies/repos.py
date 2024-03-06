@@ -42,7 +42,7 @@ class CurrencyRepository(ModelRepository):
 
     def get_all(self) -> models.QuerySet[models.Model]:
         return self.model.objects.only(
-            "abbreviation", "name_ru", "name_eng", "scale"
+            "abbreviation", "name_ru", "name_eng"
         ).all()
 
     def get_currencies_abbr(self) -> list[str]:

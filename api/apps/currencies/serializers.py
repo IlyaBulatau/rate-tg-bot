@@ -27,10 +27,9 @@ class RateSerializer(CustomModelSerializer):
 class RateViewSerializer(CustomModelSerializer):
     name_ru = serializers.CharField(source="currency_abbreviation.name_ru")
     name_eng = serializers.CharField(source="currency_abbreviation.name_eng")
-    scale = serializers.CharField(source="currency_abbreviation.scale")
 
     class Meta(RateSerializer.Meta):
-        fields = ("date", "rate", "currency_abbreviation", "name_ru", "name_eng", "scale")
+        fields = ("date", "rate", "scale", "currency_abbreviation", "name_ru", "name_eng")
 
 
 class CurrencySerializerWithoutId(CustomModelSerializer):
@@ -40,5 +39,4 @@ class CurrencySerializerWithoutId(CustomModelSerializer):
             "abbreviation",
             "name_ru",
             "name_eng",
-            "scale",
         )

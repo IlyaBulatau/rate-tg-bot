@@ -2,8 +2,6 @@ from .repos import CurrencyRepository, BaseRepository, RateRepository
 from .models import Currency, Rate
 from .serializers import CurrencySerializerWithoutId, RateViewSerializer
 
-from datetime import date
-
 from django.db.models import QuerySet
 from django.http import HttpRequest
 from rest_framework.views import APIView, Response, status
