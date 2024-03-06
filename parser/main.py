@@ -39,7 +39,6 @@ class CurrencyParser(BaseParser):
                 abbreviation=item.get("Cur_Abbreviation"),
                 name_ru=item.get("Cur_Name"),
                 name_eng=item.get("Cur_Name_Eng"),
-                scale=item.get("Cur_Scale"),
             )
             for item in data
         ]
@@ -77,6 +76,7 @@ class RateParser(BaseParser):
             currency_abbreviation=data.get("Cur_Abbreviation"),
             date=from_iso_str_to_date(date) if (date := data.get("Date")) else date,
             rate=data.get("Cur_OfficialRate"),
+            scale=data.get("Cur_Scale"),
         )
 
     @staticmethod

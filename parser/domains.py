@@ -13,7 +13,6 @@ class CurrencyDomain(DataclassToDict):
     abbreviation: str  # буквенный код
     name_ru: str  # наименование валюты на русском языке
     name_eng: str  # наименование на английском языке
-    scale: int  # количество единиц иностранной валюты
 
     def __hash__(self) -> int:
         return hash(self.abbreviation)
@@ -29,6 +28,7 @@ class RateDomain(DataclassToDict):
     currency_abbreviation: str
     date: date  #  дата, на которую запрашивается курс
     rate: float  # курс
+    scale: int  # количество единиц иностранной валюты
 
     def __hash__(self) -> int:
         return hash(self.currency_abbreviation)
