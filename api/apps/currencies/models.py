@@ -7,7 +7,6 @@ class Currency(models.Model):
     )
     name_ru = models.CharField(verbose_name="Имя на русском", max_length=128)
     name_eng = models.CharField(verbose_name="Имя на английском", max_length=128)
-    scale = models.IntegerField(verbose_name="Количество единиц валюты")
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -26,7 +25,8 @@ class Currency(models.Model):
 
 class Rate(models.Model):
     date = models.DateField(verbose_name="Дата установки курса")
-    rate = models.DecimalField(verbose_name="Курс", max_digits=8, decimal_places=5)
+    rate = models.DecimalField(verbose_name="Курс", max_digits=8, decimal_places=4)
+    scale = models.IntegerField(verbose_name="Количество единиц валюты")
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
