@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="{{ url_for('static', path='style.css') }}">
+  <title>Регистрация</title>
+</head>
+<body>
+  
+    <div class="container">
+        <form id="registrationForm" class="form">
+        <h2>Форма регистрации</h2>
+
+        <div id="dynamicFields">
+            <label for="country">Страна:</label>
+            <select name="country" required>
+            <option value="" disabled selected>Выберите страну</option>
+                {% for code, country in countries.items() %}
+                <option value="{{code}}">{{country}}</option>
+                {% endfor %}
+            </select>
+
+            <label for="ageGroup">Возрастная группа:</label>
+            <select name="ageGroup" required>
+            <option value="" disabled selected>Выберите возрастную группу</option>
+                {% for code, category in categories.items() %}
+                <option value="{{code}}">{{category}}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <button type="button" onclick="addCategorySelect()">Выбрать категорию</button>
+        <button type="submit">Отправить</button>
+        </form>
+    <script src="{{ url_for('static', path='js/scripts.js') }}"></script>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    </div>
+</body>
+</html>
+
