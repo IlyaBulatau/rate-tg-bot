@@ -12,6 +12,8 @@ services:
     entrypoint: uvicorn main:app --port=5555 --host=0.0.0.0 --reload 
     ports:
       - "5555:5555"
+    volumes:
+      - static:/home/code/static/
 
   bot:
     build:
@@ -62,6 +64,7 @@ services:
       - ./deploy/nginx/default.conf:/etc/nginx/conf.d/default.conf
       - ./deploy/certbot/conf:/etc/letsencrypt
       - ./deploy/certbot/www:/var/www/certbot
+      - static:/var/static
     ports:
       - "80:80"
       - "443:443"
@@ -115,3 +118,4 @@ services:
 volumes:
   postgres_data:
   rabbit_data:
+  static:
