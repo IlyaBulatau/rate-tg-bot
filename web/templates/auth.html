@@ -28,6 +28,13 @@
                 <option value="{{code}}">{{category}}</option>
                 {% endfor %}
             </select>
+
+            <label id="participantTypeLabel" for="participantType" style="display: none;">Тип участия:</label>
+            <select id="participantType" name="participantType" style="display: none;">
+                <option value="" disabled selected>Выберите тип участия</option>
+                <option value="team">Командное</option>
+                <option value="individual">Индивидуальное</option>
+            </select>
         </div>
 
         <button id="confirmButton" type="button">Подтвердить</button>
@@ -41,27 +48,20 @@
         let rForm = document.getElementById("registrationForm");
         let countrySelect = document.getElementById("country");
         let ageGroupSelect = document.getElementById("ageGroup");
+        let participantTypeSelect = document.getElementById("participantType");
 
-        // Добавим обработчик события для кнопки "Подтвердить"
         document.getElementById("confirmButton").addEventListener("click", function() {
-            // Проверяем, выбрана ли страна
             if (countrySelect.value !== "") {
-                // Скрываем поля страны и показываем поля возрастной группы
-                countrySelect.style.display = "none";
-                document.getElementById("countryLabel").style.display = "none";
-                ageGroupSelect.style.display = "block";
-                document.getElementById("ageGroupLabel").style.display = "block";
-                // Показываем кнопку "Отправить"
-                document.getElementById("sendData").style.display = "block";
+                showNextField();
             }
         });
 
-        // Отправляем данные в Telegram при отправке формы
-        rForm.addEventListener("submit", function(event) {
-            event.preventDefault(); // Предотвращаем стандартное поведение формы
+        document.getElementById("sendData").addEventListener("click", function() {
+            // Отправка данных в Telegram
             let formData = {
                 "country": countrySelect.value,
-                "ageGroup": ageGroupSelect.value
+                "ageGroup": ageGroupSelect.value,
+                "participantType": participantTypeSelect.value
             };
             tg.sendData(JSON.stringify(formData));
             tg.close();
