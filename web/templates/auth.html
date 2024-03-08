@@ -13,7 +13,7 @@
         <h2>Форма регистрации</h2>
 
         <div id="dynamicFields">
-            <label for="country">Страна:</label>
+            <label id="countryLabel" for="country">Страна:</label>
             <select name="country" required>
             <option  value="" disabled selected>Выберите страну</option>
                 {% for code, country in countries.items() %}
@@ -21,8 +21,8 @@
                 {% endfor %}
             </select>
 
-            <label for="ageGroup">Возрастная группа:</label>
-            <select name="ageGroup" required>
+            <label id="ageGroup" for="ageGroup" style="display: none;">Возрастная группа:</label>
+            <select id="ageGroup" name="ageGroup" required  style="display: none;">
             <option value="" disabled selected>Выберите возрастную группу</option>
                 {% for code, category in categories.items() %}
                 <option value="{{code}}">{{category}}</option>
@@ -30,8 +30,7 @@
             </select>
         </div>
 
-        <button type="button" onclick="addCategorySelect()">Выбрать категорию</button>
-        <button id="sendData" type="submit">Отправить</button>
+        <button id="confirmButton" type="button" onclick="showNextField()">Подтвердить</button>
         </form>
     </div>
     <script src="{{ url_for('static', path='js/scripts.js') }}"></script>
