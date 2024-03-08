@@ -14,14 +14,14 @@
 
         <div id="dynamicFields">
             <label id="countryLabel" for="country">Страна:</label>
-            <select name="country" required>
+            <select id="country" name="country" required>
             <option  value="" disabled selected>Выберите страну</option>
                 {% for code, country in countries.items() %}
                 <option id="country_val" value="{{code}}">{{country}}</option>
                 {% endfor %}
             </select>
 
-            <label id="ageGroup" for="ageGroup" style="display: none;">Возрастная группа:</label>
+            <label id="ageGroupLabel" for="ageGroup" style="display: none;">Возрастная группа:</label>
             <select id="ageGroup" name="ageGroup" required  style="display: none;">
             <option value="" disabled selected>Выберите возрастную группу</option>
                 {% for code, category in categories.items() %}
