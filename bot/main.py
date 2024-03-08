@@ -35,8 +35,8 @@ from aiogram.filters import Command
 @dp.message(Command(commands=["web"]))
 async def web_app(message: Message):
     markup = ReplyKeyboardBuilder()
-    markup.add(KeyboardButton("WEB", web_app=WebAppInfo(url=conf.WEB_APP_URL)))
-    await message.answer("Hello")
+    markup.add(KeyboardButton(text="WEB", web_app=WebAppInfo(url=conf.WEB_APP_URL)))
+    await message.answer("Hello", reply_markup=markup)
 ####
 
 def main():
