@@ -30,7 +30,7 @@
             </select>
 
             <label id="participantTypeLabel" for="participantType" style="display: none;">Тип участия:</label>
-            <select id="participantType" name="participantType" style="display: none;">
+            <select id="participantType" name="participantType" required style="display: none;">
                 <option value="" disabled selected>Выберите тип участия</option>
                 <option value="team">Командное</option>
                 <option value="individual">Индивидуальное</option>
@@ -51,7 +51,7 @@
         let participantTypeSelect = document.getElementById("participantType");
 
         document.getElementById("confirmButton").addEventListener("click", function() {
-            if (countrySelect.value !== "") {
+            if (countrySelect.value !== "" && ageGroupSelect.value !== "" && participantTypeSelect.value !== "") {
                 showNextField();
             }
         });
