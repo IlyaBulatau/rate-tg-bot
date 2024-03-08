@@ -26,6 +26,19 @@ async def handler_webhook(request):
     return web.Response(status=200)
 
 
+####
+# WEB APP
+from aiogram.types.web_app_info import WebAppInfo
+from aiogram.types import KeyboardButton, Message
+from aiogram.utils.keyboard import ReplyKeyboardBuilder
+from aiogram.filters import Command
+@dp.message(Command(commands=["web"]))
+async def web_app(message: Message):
+    markup = ReplyKeyboardBuilder()
+    markup.add(KeyboardButton("WEB", web_app=WebAppInfo(url=conf.WEB_APP_URL)))
+    await message.answer("Hello")
+####
+
 def main():
     dp.startup.register(on_startup)
     app.router.add_post(f"/{conf.WEBHOOK_URL}/", handler_webhook)
