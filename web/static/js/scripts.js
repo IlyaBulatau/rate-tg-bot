@@ -17,7 +17,7 @@ document.getElementById("confirmCountry").addEventListener("click", function() {
         resp.open("GET", url);
         resp.responseType = "json";
         resp.send();
-        var categories_data = resp.response;
+        var categories_data = JSON.parse(resp.responseText);
         categories_data.array.forEach(element => {
           for (var [key, val] of element) {
             let option = document.createElement("option");
