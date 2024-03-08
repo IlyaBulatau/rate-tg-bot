@@ -14,7 +14,7 @@ document.getElementById("confirmCountry").addEventListener("click", function() {
         let url = new URL(rootURL+"/auth/categories");
         url.searchParams.set("category", country);
         const resp = new XMLHttpRequest();
-        resp.open("GET", "/auth/categories");
+        resp.open("GET", url);
         resp.send();
         console.log(resp.responseText)
     }
