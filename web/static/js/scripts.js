@@ -2,7 +2,7 @@ let rForm = document.getElementById("registrationForm");
 let countrySelect = document.getElementById("country");
 let ageGroupSelect = document.getElementById("ageGroup");
 let participantTypeSelect = document.getElementById("participantType");
-
+const rootURL = window.location.origin;
 
 document.getElementById("confirmCountry").addEventListener("click", function() {
   // кнопка выбор страны
@@ -11,7 +11,7 @@ document.getElementById("confirmCountry").addEventListener("click", function() {
         showNextLabel("countryLabel", "ageGroupLabel");
         showNextSelect("country", "ageGroup");
         let country = countrySelect.value;
-        let url = new URL("/auth/categories");
+        let url = new URL(rootURL+"/auth/categories");
         url.searchParams.set("category", country);
         const resp = new XMLHttpRequest();
         resp.open("GET", "/auth/categories");
