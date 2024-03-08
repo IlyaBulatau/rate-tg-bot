@@ -12,60 +12,54 @@
         <form id="registrationForm" class="form">
         <h2>Форма регистрации</h2>
 
-        <div id="dynamicFields">
-            <label id="countryLabel" for="country">Страна:</label>
-            <select id="country" name="country" required>
-                <option  value="" disabled selected>Выберите страну</option>
-                {% for code, country in countries.items() %}
-                <option value="{{code}}">{{country}}</option>
-                {% endfor %}
-            </select>
+        <!-- Оставляем первый селект с выбором страны -->
+        <label id="countryLabel" for="country">Страна:</label>
+        <select id="country" name="country" required>
+            <option  value="" disabled selected>Выберите страну</option>
+            {% for code, country in countries.items() %}
+            <option value="{{code}}">{{country}}</option>
+            {% endfor %}
+        </select>
 
-            <label id="ageGroupLabel" for="ageGroup" style="display: none;">Возрастная группа:</label>
-            <select id="ageGroup" name="ageGroup" required  style="display: none;">
+        <!-- Добавляем кнопку подтверждения для первого селекта -->
+        <button id="confirmCountry" type="button">Подтвердить</button>
+
+        <div id="dynamicFields" style="display: none;">
+            <!-- Селект для категории и кнопка подтверждения -->
+            <label id="categoryTypeLabel" for="categoryType">Категория:</label>
+            <select id="categoryType" name="categoryType" required>
+                <option value="" disabled selected>Выберите категорию</option>
+                <option value="category1">Категория 1</option>
+                <option value="category2">Категория 2</option>
+            </select>
+            <button id="confirmCategory" type="button">Подтвердить категорию</button>
+
+            <!-- Селект для возрастной группы и кнопка подтверждения -->
+            <label id="ageGroupLabel" for="ageGroup">Возрастная группа:</label>
+            <select id="ageGroup" name="ageGroup" required>
                 <option value="" disabled selected>Выберите возрастную группу</option>
                 {% for code, category in categories.items() %}
                 <option value="{{code}}">{{category}}</option>
                 {% endfor %}
             </select>
+            <button id="confirmAgeGroup" type="button">Подтвердить возрастную группу</button>
 
-            <label id="participantTypeLabel" for="participantType" style="display: none;">Тип участия:</label>
-            <select id="participantType" name="participantType" style="display: none;">
+            <!-- Селект для типа участия и кнопка подтверждения -->
+            <label id="participantTypeLabel" for="participantType">Тип участия:</label>
+            <select id="participantType" name="participantType" required>
                 <option value="" disabled selected>Выберите тип участия</option>
                 <option value="team">Командное</option>
                 <option value="individual">Индивидуальное</option>
             </select>
-        </div>
+            <button id="confirmParticipantType" type="button">Подтвердить тип участия</button>
 
-        <button id="confirmButton" type="button">Подтвердить</button>
-        <button id="sendData" type="submit" style="display: none;">Отправить</button>
+            <!-- Кнопка для отправки данных -->
+            <button id="sendData" type="button" style="display: none;">Отправить</button>
+        </div>
         </form>
     </div>
+
     <script src="{{ url_for('static', path='js/scripts.js') }}"></script>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <script>
-        let tg = window.Telegram.WebApp;
-        let rForm = document.getElementById("registrationForm");
-        let countrySelect = document.getElementById("country");
-        let ageGroupSelect = document.getElementById("ageGroup");
-        let participantTypeSelect = document.getElementById("participantType");
-
-        document.getElementById("confirmButton").addEventListener("click", function() {
-            if (countrySelect.value !== "") {
-                showNextField();
-            }
-        });
-
-        document.getElementById("sendData").addEventListener("click", function() {
-            // Отправка данных в Telegram
-            let formData = {
-                "country": countrySelect.value,
-                "ageGroup": ageGroupSelect.value,
-                "participantType": participantTypeSelect.value
-            };
-            tg.sendData(JSON.stringify(formData));
-            tg.close();
-        });
-    </script>
 </body>
 </html>
