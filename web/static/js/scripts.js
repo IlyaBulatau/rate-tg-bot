@@ -1,4 +1,3 @@
-let tg = window.Telegram.WebApp;
 let rForm = document.getElementById("registrationForm");
 let countrySelect = document.getElementById("country");
 let ageGroupSelect = document.getElementById("ageGroup");
@@ -29,17 +28,6 @@ document.getElementById("confirmParticipantType").addEventListener("click", func
     }
 });
 
-document.getElementById("sendData").addEventListener("click", function() {
-    // Отправка данных в Telegram
-    let formData = {
-        "country": countrySelect.value,
-        "ageGroup": ageGroupSelect.value,
-        "categoryType": categoryTypeSelect.value,
-        "participantType": participantTypeSelect.value
-    };
-    tg.sendData(JSON.stringify(formData));
-    tg.close();
-});
 
 function showNextField(currentButtonId, nextButtonId) {
     document.getElementById(currentButtonId).style.display = "none";

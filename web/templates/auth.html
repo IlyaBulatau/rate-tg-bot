@@ -61,5 +61,23 @@
 
     <script src="{{ url_for('static', path='js/scripts.js') }}"></script>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
+
+    <script>
+        let tg = window.Telegram.WebApp;
+        document.getElementById("sendData").addEventListener("click", function() {
+        // Отправка данных в Telegram
+        let formData = {
+            "country": countrySelect.value,
+            "ageGroup": ageGroupSelect.value,
+            "categoryType": categoryTypeSelect.value,
+            "participantType": participantTypeSelect.value
+        };
+        tg.sendData(JSON.stringify(formData));
+        tg.close();
+});
+
+
+    </script>
+
 </body>
 </html>
