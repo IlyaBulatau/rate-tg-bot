@@ -39,7 +39,7 @@ async def web_app(message: Message):
     markup.add(KeyboardButton(text="WEB", web_app=WebAppInfo(url=conf.WEB_APP_URL)))
     await message.answer("Hello", reply_markup=markup.as_markup())
 
-@dp.message(lambda msg: msg == "web_app_data")
+@dp.message(lambda msg: msg if  getattr(msg, "web_app_data") else False)
 async def data_from_web_app(message: Message):
     """Прием данных"""
     await message.answer(str(message.web_app_data.data))
