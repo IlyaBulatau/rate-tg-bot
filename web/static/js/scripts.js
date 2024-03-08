@@ -17,13 +17,13 @@ document.getElementById("confirmCountry").addEventListener("click", function() {
         resp.open("GET", url);
         resp.responseType = "json";
         resp.send();
-        var categories_data = resp.responseText
+        var categories_data = resp.response;
         categories_data.array.forEach(element => {
           for (var [key, val] of element) {
             let option = document.createElement("option");
-            option.value = key
-            option.text = val
-            ageGroupSelect.add(option)
+            option.value = key;
+            option.text = val;
+            ageGroupSelect.add(option);
           };
         });
     }
