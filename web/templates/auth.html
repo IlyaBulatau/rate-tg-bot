@@ -37,11 +37,10 @@
             </select>
         </div>
 
-        <button id="confirmButton" type="button" onclick="validateForm()">Подтвердить</button>
+        <button id="confirmButton" type="button">Подтвердить</button>
         <button id="sendData" type="submit" style="display: none;">Отправить</button>
         </form>
     </div>
-    <script src="{{ url_for('static', path='js/script_common.js') }}"></script>
     <script src="{{ url_for('static', path='js/scripts.js') }}"></script>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script>
@@ -51,21 +50,12 @@
         let ageGroupSelect = document.getElementById("ageGroup");
         let participantTypeSelect = document.getElementById("participantType");
 
-        function validateForm() {
-            if (countrySelect.value !== "" && ageGroupSelect.value !== "" && participantTypeSelect.value !== "") {
-                showNextField();
-            }
-        }
+        document.getElementById("confirmButton").addEventListener("click", function() {
+            validateAndProceed(countrySelect.value, ageGroupSelect.value, participantTypeSelect.value);
+        });
 
         document.getElementById("sendData").addEventListener("click", function() {
-            // Отправка данных в Telegram
-            let formData = {
-                "country": countrySelect.value,
-                "ageGroup": ageGroupSelect.value,
-                "participantType": participantTypeSelect.value
-            };
-            tg.sendData(JSON.stringify(formData));
-            tg.close();
+            validateAndSubmit(countrySelect.value, ageGroupSelect.value, participantTypeSelect.value);
         });
     </script>
 </body>
