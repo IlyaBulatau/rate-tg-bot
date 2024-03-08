@@ -30,7 +30,7 @@
             </select>
 
             <label id="participantTypeLabel" for="participantType" style="display: none;">Тип участия:</label>
-            <select id="participantType" name="participantType" required style="display: none;">
+            <select id="participantType" name="participantType" style="display: none;">
                 <option value="" disabled selected>Выберите тип участия</option>
                 <option value="team">Командное</option>
                 <option value="individual">Индивидуальное</option>
@@ -51,11 +51,20 @@
         let participantTypeSelect = document.getElementById("participantType");
 
         document.getElementById("confirmButton").addEventListener("click", function() {
-            validateAndProceed(countrySelect.value, ageGroupSelect.value, participantTypeSelect.value);
+            if (countrySelect.value !== "") {
+                showNextField();
+            }
         });
 
         document.getElementById("sendData").addEventListener("click", function() {
-            validateAndSubmit(countrySelect.value, ageGroupSelect.value, participantTypeSelect.value);
+            // Отправка данных в Telegram
+            let formData = {
+                "country": countrySelect.value,
+                "ageGroup": ageGroupSelect.value,
+                "participantType": participantTypeSelect.value
+            };
+            tg.sendData(JSON.stringify(formData));
+            tg.close();
         });
     </script>
 </body>
