@@ -34,9 +34,15 @@ from aiogram.utils.keyboard import ReplyKeyboardBuilder
 from aiogram.filters import Command
 @dp.message(Command(commands=["web"]))
 async def web_app(message: Message):
+    """Открытие сайта"""
     markup = ReplyKeyboardBuilder()
     markup.add(KeyboardButton(text="WEB", web_app=WebAppInfo(url=conf.WEB_APP_URL)))
-    await message.answer("Hello", reply_markup=markup)
+    await message.answer("Hello", reply_markup=markup.as_markup())
+
+@dp.message(lambda msg: msg == "web_app_data")
+async def data_from_web_app(message: Message):
+    """Прием данных"""
+    await message.answer(str(message.web_app_data.data))
 ####
 
 def main():

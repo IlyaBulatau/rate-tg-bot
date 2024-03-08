@@ -15,9 +15,9 @@
         <div id="dynamicFields">
             <label for="country">Страна:</label>
             <select name="country" required>
-            <option value="" disabled selected>Выберите страну</option>
+            <option  value="" disabled selected>Выберите страну</option>
                 {% for code, country in countries.items() %}
-                <option value="{{code}}">{{country}}</option>
+                <option id="country_val" value="{{code}}">{{country}}</option>
                 {% endfor %}
             </select>
 
@@ -31,11 +31,24 @@
         </div>
 
         <button type="button" onclick="addCategorySelect()">Выбрать категорию</button>
-        <button type="submit">Отправить</button>
+        <button id="sendData" type="submit">Отправить</button>
         </form>
+    </div>
     <script src="{{ url_for('static', path='js/scripts.js') }}"></script>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    </div>
+    <script>
+        let tg = window.Telegram.WebApp;
+        let rForm = document.getElementById("registrationForm");
+
+        rForm.addEventListener(
+            "click", () => {
+                country = document.getElementById("country_val").value;
+                tg.sendData(JSON.stringify({"country": country}));
+                tg.close();
+            }
+            )
+
+    </script>
 </body>
 </html>
 
