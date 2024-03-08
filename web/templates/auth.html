@@ -24,34 +24,25 @@
         <!-- Добавляем кнопку подтверждения для первого селекта -->
         <button id="confirmCountry" type="button">Подтвердить</button>
 
-        <div id="dynamicFields" style="display: none;">
-            <!-- Селект для категории и кнопка подтверждения -->
-            <label id="categoryTypeLabel" for="categoryType">Категория:</label>
-            <select id="categoryType" name="categoryType" required>
-                <option value="" disabled selected>Выберите категорию</option>
-                <option value="category1">Категория 1</option>
-                <option value="category2">Категория 2</option>
-            </select>
-            <button id="confirmCategory" type="button">Подтвердить категорию</button>
-
+        <div id="dynamicFields">
             <!-- Селект для возрастной группы и кнопка подтверждения -->
-            <label id="ageGroupLabel" for="ageGroup">Возрастная группа:</label>
-            <select id="ageGroup" name="ageGroup" required>
+            <label id="ageGroupLabel" for="ageGroup" style="display: none;">Возрастная группа:</label>
+            <select id="ageGroup" name="ageGroup" style="display: none;" required>
                 <option value="" disabled selected>Выберите возрастную группу</option>
                 {% for code, category in categories.items() %}
                 <option value="{{code}}">{{category}}</option>
                 {% endfor %}
             </select>
-            <button id="confirmAgeGroup" type="button">Подтвердить возрастную группу</button>
+            <button id="confirmAgeGroup" type="button" style="display: none;">Подтвердить возрастную группу</button>
 
             <!-- Селект для типа участия и кнопка подтверждения -->
-            <label id="participantTypeLabel" for="participantType">Тип участия:</label>
-            <select id="participantType" name="participantType" required>
+            <label id="participantTypeLabel" for="participantType" style="display: none;">Тип участия:</label>
+            <select id="participantType" name="participantType" style="display: none;" required>
                 <option value="" disabled selected>Выберите тип участия</option>
                 <option value="team">Командное</option>
                 <option value="individual">Индивидуальное</option>
             </select>
-            <button id="confirmParticipantType" type="button">Подтвердить тип участия</button>
+            <button id="confirmParticipantType" style="display: none;" type="button">Подтвердить тип участия</button>
 
             <!-- Кнопка для отправки данных -->
             <button id="sendData" type="button" style="display: none;">Отправить</button>
