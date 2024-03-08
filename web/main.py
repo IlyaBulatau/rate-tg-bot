@@ -31,6 +31,27 @@ COUNTIRES = {
 }
 
 
+CATEGORIES_COUNTRY = {
+    "ru": [
+        {Categories.PRESCHOOL.name: Categories.PRESCHOOL.value}, 
+        {Categories.JUNIOR.name: Categories.JUNIOR.value}, 
+        {Categories.MIDDLE.name: Categories.MIDDLE.value}, 
+        {Categories.SENIOR.name: Categories.SENIOR.value}, 
+        {Categories.TEACHER.name :Categories.TEACHER.value}, 
+        {Categories.OVZ.name: Categories.OVZ.value}
+        ],
+    "kz": [
+        {Categories.JUNIOR.name: Categories.JUNIOR.value}, 
+        {Categories.MIDDLE.name: Categories.MIDDLE.value}, 
+        {Categories.SENIOR.name: Categories.SENIOR.value}
+        ],
+    "uz": [
+        {Categories.JUNIOR.name: Categories.JUNIOR.value}, 
+        {Categories.MIDDLE.name: Categories.MIDDLE.value}, 
+        {Categories.SENIOR.name: Categories.SENIOR.value}
+        ],
+}
+
 @app.get("/auth", response_class=HTMLResponse)
 async def form_authentication(request: Request):
     """Страница с формой"""
@@ -39,6 +60,12 @@ async def form_authentication(request: Request):
         "categories": Categories.to_dict()
     }
     return templates.TemplateResponse(request=request, name="auth.html", context=context)
+
+
+@app.get("/auth/categories")
+async def get_categories(category: str):
+    return {"cateogries": CATEGORIES_COUNTRY[category]}
+
 
 @app.post("/auth")
 async def authentication(request: Request):

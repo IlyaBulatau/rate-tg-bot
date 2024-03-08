@@ -5,10 +5,18 @@ let participantTypeSelect = document.getElementById("participantType");
 
 
 document.getElementById("confirmCountry").addEventListener("click", function() {
+  // кнопка выбор страны
     if (countrySelect.value !== "") {
         showNextButton("confirmCountry", "confirmAgeGroup");
         showNextLabel("countryLabel", "ageGroupLabel");
         showNextSelect("country", "ageGroup");
+        let country = countrySelect.value;
+        let url = new URL("/auth/categories");
+        url.searchParams.set("category", country);
+        const resp = new XMLHttpRequest();
+        resp.open("GET", "/auth/categories");
+        resp.send();
+        console.log(resp.responseText)
     }
 });
 
