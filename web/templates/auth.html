@@ -15,22 +15,22 @@
         <div id="dynamicFields">
             <label id="countryLabel" for="country">Страна:</label>
             <select id="country" name="country" required>
-            <option  value="" disabled selected>Выберите страну</option>
+                <option  value="" disabled selected>Выберите страну</option>
                 {% for code, country in countries.items() %}
-                <option id="country_val" value="{{code}}">{{country}}</option>
+                <option value="{{code}}">{{country}}</option>
                 {% endfor %}
             </select>
 
             <label id="ageGroupLabel" for="ageGroup" style="display: none;">Возрастная группа:</label>
             <select id="ageGroup" name="ageGroup" required  style="display: none;">
-            <option value="" disabled selected>Выберите возрастную группу</option>
+                <option value="" disabled selected>Выберите возрастную группу</option>
                 {% for code, category in categories.items() %}
                 <option value="{{code}}">{{category}}</option>
                 {% endfor %}
             </select>
         </div>
 
-        <button id="confirmButton" type="button" onclick="showNextField()">Подтвердить</button>
+        <button id="confirmButton" type="button">Подтвердить</button>
         <button id="sendData" type="submit" style="display: none;">Отправить</button>
         </form>
     </div>
@@ -39,16 +39,33 @@
     <script>
         let tg = window.Telegram.WebApp;
         let rForm = document.getElementById("registrationForm");
+        let countrySelect = document.getElementById("country");
+        let ageGroupSelect = document.getElementById("ageGroup");
 
-        rForm.addEventListener(
-            "click", () => {
-                country = document.getElementById("country_val").value;
-                tg.sendData(JSON.stringify({"country": country}));
-                tg.close();
+        // Добавим обработчик события для кнопки "Подтвердить"
+        document.getElementById("confirmButton").addEventListener("click", function() {
+            // Проверяем, выбрана ли страна
+            if (countrySelect.value !== "") {
+                // Скрываем поля страны и показываем поля возрастной группы
+                countrySelect.style.display = "none";
+                document.getElementById("countryLabel").style.display = "none";
+                ageGroupSelect.style.display = "block";
+                document.getElementById("ageGroupLabel").style.display = "block";
+                // Показываем кнопку "Отправить"
+                document.getElementById("sendData").style.display = "block";
             }
-            )
+        });
 
+        // Отправляем данные в Telegram при отправке формы
+        rForm.addEventListener("submit", function(event) {
+            event.preventDefault(); // Предотвращаем стандартное поведение формы
+            let formData = {
+                "country": countrySelect.value,
+                "ageGroup": ageGroupSelect.value
+            };
+            tg.sendData(JSON.stringify(formData));
+            tg.close();
+        });
     </script>
 </body>
 </html>
-
