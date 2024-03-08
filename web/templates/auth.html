@@ -29,9 +29,6 @@
             <label id="ageGroupLabel" for="ageGroup" style="display: none;">Возрастная группа:</label>
             <select id="ageGroup" name="ageGroup" style="display: none;" required>
                 <option value="" disabled selected>Выберите возрастную группу</option>
-                {% for code, category in categories.items() %}
-                <option value="{{code}}">{{category}}</option>
-                {% endfor %}
             </select>
             <button id="confirmAgeGroup" type="button" style="display: none;">Подтвердить возрастную группу</button>
 

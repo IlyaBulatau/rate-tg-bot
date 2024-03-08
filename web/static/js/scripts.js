@@ -15,8 +15,17 @@ document.getElementById("confirmCountry").addEventListener("click", function() {
         url.searchParams.set("category", country);
         const resp = new XMLHttpRequest();
         resp.open("GET", url);
+        resp.responseType = "json";
         resp.send();
-        console.log(resp.responseText)
+        var categories_data = resp.responseText
+        categories_data.array.forEach(element => {
+          for (var [key, val] of element) {
+            let option = document.createElement("option");
+            option.value = key
+            option.text = val
+            ageGroupSelect.add(option)
+          };
+        });
     }
 });
 
