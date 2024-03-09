@@ -21,6 +21,14 @@
             {% endfor %}
         </select>
 
+        <!-- Если by ссылка на регистрацию -->
+        <a id="byCountryLink" href="https://r-ed.by/fest2023/" style="display: none;">Перейдите для регитрации Беларуси</a>
+
+        <!-- Для не указанной страны -->
+        <label id="otherCountyLabel" for="otherCounty" style="display: none;">Укажите страну</label>
+        <input type="text" name="otherCounty" id="otherCounty" style="display: none;" class="form-control">
+        <button id="otherCountyButton" style="display: none;">Подтвердить страну</button>
+
         <!-- Добавляем кнопку подтверждения для первого селекта -->
         <button id="confirmCountry" type="button">Подтвердить</button>
 
@@ -41,6 +49,15 @@
             </select>
             <button id="confirmParticipantType" style="display: none;" type="button">Подтвердить тип участия</button>
 
+            <!-- Селект для соревнования и кнопка подтверждения -->
+            <label id="competitionLabel" for="competitionSelect" style="display: none;">Соревнования:</label>
+            <select id="competitionSelect" name="competitionSelect" style="display: none;" required>
+                <option value="" disabled selected>Выберите соревнования</option>
+            </select>
+            <button id="configrmCompetitionButton" style="display: none;" type="button">Подтвердить соревнования</button>
+            
+
+
             <!-- Кнопка для отправки данных -->
             <button id="sendData" type="button" style="display: none;">Отправить</button>
         </div>
@@ -57,7 +74,8 @@
         let formData = {
             "country": countrySelect.value,
             "ageGroup": ageGroupSelect.value,
-            "participantType": participantTypeSelect.value
+            "participantType": participantTypeSelect.value,
+            "comptetition": comptetitionSelect.value
         };
         tg.sendData(JSON.stringify(formData));
         tg.close();

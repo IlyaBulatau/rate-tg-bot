@@ -55,3 +55,21 @@ button {
 button:hover {
   background-color: #006699;
 }
+
+#byCountryLink {
+  color: blue; 
+  text-decoration: underline; 
+  font-weight: bold; 
+}
+
+#byCountryLink:hover {
+  color: darkblue; 
+}
+
+.form-control {
+  color: #212529;
+  background-color: #fff;
+  border-color: #bdbdbd;
+  outline: 0;
+  box-shadow: 0 0 0 0.2rem rgba(158, 158, 158, 0.25);
+}
