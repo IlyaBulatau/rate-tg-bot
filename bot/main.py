@@ -29,14 +29,14 @@ async def handler_webhook(request):
 ####
 # WEB APP
 from aiogram.types.web_app_info import WebAppInfo
-from aiogram.types import InlineKeyboardButton, Message
-from aiogram.utils.keyboard import InlineKeyboardBuilder
+from aiogram.types import KeyboardButton, Message
+from aiogram.utils.keyboard import ReplyKeyboardBuilder
 from aiogram.filters import Command
 @dp.message(Command(commands=["web"]))
 async def web_app(message: Message):
     """Открытие сайта"""
-    markup = InlineKeyboardBuilder()
-    markup.add(InlineKeyboardButton(text="WEB", web_app=WebAppInfo(url=conf.WEB_APP_URL)))
+    markup = ReplyKeyboardBuilder()
+    markup.add(KeyboardButton(text="WEB", web_app=WebAppInfo(url=conf.WEB_APP_URL)))
     await message.answer("Hello", reply_markup=markup.as_markup())
 
 @dp.message(lambda msg: msg if  getattr(msg, "web_app_data") else False)
