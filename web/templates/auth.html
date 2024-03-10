@@ -193,6 +193,8 @@
             "mentorEmail": document.getElementById("mentorEmail").value,
             "mentorTelegramUsername": document.getElementById("mentorTelegramNickname").value,
                 };
+            tg.sendData(JSON.stringify(formData));
+
             }
             else {
                 let formData = {
@@ -223,9 +225,10 @@
                 }
 
                 };
+            tg.sendData(JSON.stringify(formData));
+
             };
             
-            tg.sendData(JSON.stringify(formData));
         }
 
         else {
