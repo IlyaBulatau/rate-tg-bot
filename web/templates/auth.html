@@ -84,7 +84,7 @@
 
                 <label for="mentorPhone">Номер телефона наставника:</label>
                 <input type="tel" id="mentorPhone" name="mentorPhone" required>
-                telegramNickName
+
                 <label for="mentorEmail">Почта наставника:</label>
                 <input type="email" id="mentorEmail" name="mentorEmail" required>
 
@@ -172,6 +172,7 @@
         // Отправка данных в Telegram
         
         if (countrySelect.value !== "oth") {
+            let formData; 
             if (participantTypeSelect.value === "individual") {
                 let formData = {
             "telegramId": tg.initDataUnsafe.user.id,
