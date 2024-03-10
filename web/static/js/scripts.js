@@ -84,7 +84,6 @@ participantTypeSelect.addEventListener("change", function() {
 });
 
 competitionSelect.addEventListener("change", function() {
-    if (competitionSelect.value !== "") {
       if (participantTypeSelect.value === "team") {
         document.getElementById("applicationTeam").style.display = "block";
       }
@@ -92,7 +91,6 @@ competitionSelect.addEventListener("change", function() {
       else {
         document.getElementById("applicationIndividual").style.display = "block";
       };
-    };
   });
 
 
