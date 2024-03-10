@@ -26,9 +26,7 @@
 
         <!-- Для не указанной страны -->
         <label id="otherCountyLabel" for="otherCounty" style="display: none;">Укажите страну</label>
-        <input type="text" name="otherCounty" id="otherCounty" style="display: none;" class="form-control">
-
-        <!-- Добавляем кнопку подтверждения для первого селекта -->
+        <input type="text" name="otherCounty" id="otherCounty" style="display: none;">
 
         <div id="dynamicFields">
             <!-- Селект для возрастной группы и кнопка подтверждения -->
@@ -47,10 +45,118 @@
 
             <!-- Селект для соревнования и кнопка подтверждения -->
             <label id="competitionLabel" for="competitionSelect" style="display: none;">Соревнования:</label>
-            <select id="competitionSelect" name="competitionSelect" style="display: none;" required>
+            <select id="competitionSelect" name="competitionSelect" style="display: none;" required multiple>
                 <option value="" disabled selected>Выберите соревнования</option>
             </select>
+
+             <!-- Форма заполнения индивидуальной заявки заявки  -->
+            <div id="applicationIndividual" style="display: none;">
+                <h2>Анкета</h2>
+                <label for="lastName">Фамилия:</label>
+                <input type="text" id="lastName" name="lastName" required>
+
+                <label for="firstName">Имя:</label>
+                <input type="text" id="firstName" name="firstName" required>
+
+                <label for="patronymic">Отчество:</label>
+                <input type="text" id="patronymic" name="patronymic" required>
+
+                <label for="birthDay">Дата рождения:</label>
+                <input type="date" id="birthDay" name="birthDay" required>
+
+                <label for="email">Электронный адрес:</label>
+                <input type="email" id="email" name="email" required>
+
+                <label for="telegramUsername">Ник в Телеграм:</label>
+                <input type="text" id="telegramUsername" name="telegramUsername" required>
+
+                <label for="phone">Телефон:</label>
+                <input type="tel" id="phone" name="phone" required>
+
+                <label for="city">Город:</label>
+                <input type="text" id="city" name="city" required>
+
+                <label for="educationalInstitution">Образовательное учреждение:</label>
+                <input type="text" id="educationalInstitution" name="educationalInstitution" required>
+
+                <label for="mentorFullName">ФИО наставника:</label>
+                <input type="text" id="mentorFullName" name="mentorFullName" required>
+
+                <label for="mentorPhone">Номер телефона наставника:</label>
+                <input type="tel" id="mentorPhone" name="mentorPhone" required>
+                telegramNickName
+                <label for="mentorEmail">Почта наставника:</label>
+                <input type="email" id="mentorEmail" name="mentorEmail" required>
+
+                <label for="mentorTelegramNickname">Ник в Телеграм наставника:</label>
+                <input type="text" id="mentorTelegramNickname" name="mentorTelegramNickname" required>
+            </div>
             
+
+            <!-- Форма заявления командной заявки -->
+            <div id="applicationTeam" style="display: none;">
+                <h2>Анкета</h2>
+                
+                <h3>Участник 1</h3>
+
+                <label for="lastNameFirst">Фамилия:</label>
+                <input type="text" id="lastNameFirst" name="lastNameFirst" required>
+
+                <label for="firstNameFirst">Имя:</label>
+                <input type="text" id="firstNameFirst" name="firstNameFirst" required>
+
+                <label for="patronymicFirst">Отчество:</label>
+                <input type="text" id="patronymicFirst" name="patronymicFirst" required>
+
+                <label for="birthDayFirst">Дата рождения:</label>
+                <input type="date" id="birthDayFirst" name="birthDayFirst" required>
+                
+                <label for="emailFirst">Электронный адрес:</label>
+                <input type="emailFirst" id="emailFirst" name="emailFirst" required>
+
+                <label for="telegramUsernameFirst">Ник в Телеграм:</label>
+                <input type="text" id="telegramUsernameFirst" name="telegramUsernameFirst" required>
+
+                <label for="phoneFirst">Телефон:</label>
+                <input type="tel" id="phoneFirst" name="phoneFirst" required>
+
+                <label for="cityFirst">Город:</label>
+                <input type="text" id="cityFirst" name="cityFirst" required>
+
+                <label for="educationalInstitutionFirst">Образовательное учреждение:</label>
+                <input type="text" id="educationalInstitutionFirst" name="educationalInstitutionFirst" required>
+
+                <h3>Участник 2</h3>
+
+                <label for="lastNameSecond">Фамилия:</label>
+                <input type="text" id="lastNameSecond" name="lastNameSecond" required>
+
+                <label for="firstNameSecond">Имя:</label>
+                <input type="text" id="firstNameSecond" name="firstNameSecond" required>
+
+                <label for="patronymicSecond">Отчество:</label>
+                <input type="text" id="patronymicSecond" name="patronymicSecond" required>
+
+                <label for="birthDaySecond">Дата рождения:</label>
+                <input type="date" id="birthDaySecond" name="birthDaySecond" required>
+                
+                <label for="emailSecond">Электронный адрес:</label>
+                <input type="email" id="emailSecond" name="emailSecond" required>
+
+                <label for="telegramUsernameSecond">Ник в Телеграм:</label>
+                <input type="text" id="telegramUsernameSecond" name="telegramUsernameSecond" required>
+
+                <label for="phoneSecond">Телефон:</label>
+                <input type="tel" id="phoneSecond" name="phoneSecond" required>
+
+                <label for="citySecond">Город:</label>
+                <input type="text" id="citySecond" name="citySecond" required>
+
+                <label for="educationalInstitutionSecond">Образовательное учреждение:</label>
+                <input type="text" id="educationalInstitutionSecond" name="educationalInstitutionSecond" required>
+
+            </div>
+
             <!-- Кнопка для отправки данных -->
             <button id="sendData" type="button" style="display: none;">Отправить</button>
         </div>
@@ -64,18 +170,65 @@
         let tg = window.Telegram.WebApp;
         document.getElementById("sendData").addEventListener("click", function() {
         // Отправка данных в Telegram
-        let formData = {
-            "telegram_user_id": tg.initDataUnsafe.user.id,
+        
+        if (countrySelect.value !== "oth") {
+            if (participantTypeSelect.value === "individual") {
+                let formData = {
+            "telegramId": tg.initDataUnsafe.user.id,
             "country": countrySelect.value,
             "ageGroup": ageGroupSelect.value,
             "participantType": participantTypeSelect.value,
-            "comptetition": competitionSelect.value
-        };
-        if (countrySelect.value !== "oth") {
+            "comptetition": getSelectValues(competitionSelect),
+            "lastName": document.getElementById("lastName").value,
+            "firstName": document.getElementById("firstName").value,
+            "patronymic": document.getElementById("patronymic").value,
+            "birthDay": document.getElementById("birthDay").value,
+            "email": document.getElementById("email").value,
+            "telegramUsername": document.getElementById("telegramUsername").value,
+            "phone": document.getElementById("phone").value,
+            "city": document.getElementById("city").value,
+            "mentorFullName": document.getElementById("mentorFullName").value,
+            "mentorPhone": document.getElementById("mentorPhone").value,
+            "mentorEmail": document.getElementById("mentorEmail").value,
+            "mentorTelegramUsername": document.getElementById("mentorTelegramNickname").value,
+                };
+            }
+            else {
+                let formData = {
+                "telegramId": tg.initDataUnsafe.user.id,
+                "country": countrySelect.value,
+                "ageGroup": ageGroupSelect.value,
+                "participantType": participantTypeSelect.value,
+                "comptetition": getSelectValues(competitionSelect),
+                "partFirst": {
+                    "lastName": document.getElementById("lastNameFirst").value,
+                    "firstName": document.getElementById("firstNameFirst").value,
+                    "patronymic": document.getElementById("patronymicFirst").value,
+                    "birthDay": document.getElementById("birthDayFirst").value,
+                    "email": document.getElementById("emailFirst").value,
+                    "telegramUsername": document.getElementById("telegramUsernameFirst").value,
+                    "phone": document.getElementById("phoneFirst").value,
+                    "city": document.getElementById("cityFirst").value,
+                },
+                "partSecond": {
+                    "lastName": document.getElementById("lastNameSecond").value,
+                    "firstName": document.getElementById("firstNameSecond").value,
+                    "patronymic": document.getElementById("patronymicSecond").value,
+                    "birthDay": document.getElementById("birthDaySecond").value,
+                    "email": document.getElementById("emailSecond").value,
+                    "telegramUsername": document.getElementById("telegramUsernameSecond").value,
+                    "phone": document.getElementById("phoneSecond").value,
+                    "city": document.getElementById("citySecond").value,
+                }
+
+                };
+            };
+            
             tg.sendData(JSON.stringify(formData));
         }
+
         else {
-            tg.sendData(JSON.stringify({"county": document.getElementById("otherCounty").value, "telegram_user_id": tg.initDataUnsafe.user.id,}));
+            tg.sendData(JSON.stringify({"county": document.getElementById("otherCounty").value, "telegram_user_id": tg.initDataUnsafe.user.id}));
         }
         tg.close();
 });

@@ -4,6 +4,7 @@ let countryOtherSelect = document.getElementById("otherCounty")
 let ageGroupSelect = document.getElementById("ageGroup");
 let participantTypeSelect = document.getElementById("participantType");
 let competitionSelect = document.getElementById("competitionSelect");
+
 const rootURL = window.location.origin;
 
 
@@ -83,7 +84,50 @@ participantTypeSelect.addEventListener("change", function() {
 });
 
 competitionSelect.addEventListener("change", function() {
-    showSendButton()
+    if (competitionSelect.value !== "") {
+      if (participantTypeSelect.value === "team") {
+        document.getElementById("applicationTeam").style.display = "block";
+      }
+      
+      else {
+        document.getElementById("applicationIndividual").style.display = "block";
+      };
+    };
+  });
+
+
+document.addEventListener("DOMContentLoaded", function () {
+
+  const individualInputs = document.querySelectorAll("#applicationIndividual input");
+    individualInputs.forEach(function (input) {
+        input.addEventListener("input", checkIndividualFields);
+    });
+
+    // Добавляем событие изменения поля наставника
+
+    function checkIndividualFields() {
+        const areIndividualFieldsFilled = Array.from(individualInputs).every(input => input.value.trim() !== "");
+        if (areIndividualFieldsFilled) {
+            showSendButton();
+        } else {
+            hideSendButton();
+        }
+    }
+
+    const teamInput = document.querySelectorAll("#applicationTeam input");
+    teamInput.forEach(function (input) {
+      input.addEventListener("input", checkTeamFields);
+    });
+
+    function checkTeamFields() {
+      const areTeamFieldsFilled = Array.from(teamInput).every(input => input.value.trim() !== "");
+        if (areTeamFieldsFilled) {
+            showSendButton();
+        } else {
+            hideSendButton();
+        }
+    }
+
 });
 
 
@@ -96,4 +140,24 @@ function showNextSelect(currentSelectId, nextSelectId, nextLabel) {
 
 function showSendButton() {
     document.getElementById("sendData").style.display = "block";
+}
+
+function hideSendButton() {
+    document.getElementById("sendData").style.display = "none";
+
+}
+
+function getSelectValues(select) {
+  var result = [];
+  var options = select && select.options;
+  var opt;
+
+  for (var i=0, iLen=options.length; i<iLen; i++) {
+    opt = options[i];
+
+    if (opt.selected) {
+      result.push(opt.value || opt.text);
+    }
+  }
+  return result;
 }
