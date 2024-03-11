@@ -52,35 +52,79 @@ countrySelect.addEventListener("change", function() {
   });
 
 ageGroupSelect.addEventListener("change", function() {
-    showNextSelect("ageGroup", "participantType", "participantTypeLabel")
+    if (ageGroupSelect.value === "TEACHER") {
+        ageGroupSelect.disabled = true;   
+
+      document.getElementById("teacherGroupLable").style.display = "block";
+      document.getElementById("teacherGroup").style.display = "block";
+      participantTypeSelect.value = "teacher";
+    }
+    else if (ageGroupSelect.value === "OVZ") {
+    ageGroupSelect.disabled = true; 
+
+      document.getElementById("ovzGroupLabel").style.display = "block";
+      document.getElementById("ovzGroup").style.display = "block";
+    } 
+    else {
+      showNextSelect("ageGroup", "participantType", "participantTypeLabel")
+    };
 });
+
+document.getElementById("ovzGroup").addEventListener("change", function() {
+  document.getElementById("ovzGroup").disabled = true;
+  showNextSelect("ovzGroup", "participantType", "participantTypeLabel")
+
+});
+
+document.getElementById("teacherGroup").addEventListener("change", function(){
+  if (document.getElementById("teacherGroup").value === "teacherCompetition") {
+      document.getElementById("teacherGroup").disabled = true;
+      document.getElementById("applicationIndividual").style.display = "block";
+  }
+  else {
+    location.reload()
+  };
+});
+
 
 participantTypeSelect.addEventListener("change", function() {
 
   if (participantTypeSelect.value !== "") {
-    let country = countrySelect.value;
-    let age = ageGroupSelect.value;
-    let practic = participantTypeSelect.value;
-
-    let url = new URL(rootURL+"/auth/competitions");
-    url.searchParams.set("country", country);
-    url.searchParams.set("category", age);
-    url.searchParams.set("practic", practic);
-
-    fetch(url)
-      .then(response => {
-        return response.json();
-      })
-      .then(data => {
-          Object.entries(data).forEach(([key, val]) => {
-            let option = document.createElement("option");
-            option.value = key;
-            option.text = val;
-            competitionSelect.add(option);
-          });
-        });
+    if (ageGroupSelect.value === "OVZ") {
+      if (participantTypeSelect.value === "team") {
+        document.getElementById("applicationTeam").style.display = "block";
       }
+      
+      else {
+        document.getElementById("applicationIndividual").style.display = "block";
+      };
+    }
+    else {
+      let country = countrySelect.value;
+      let age = ageGroupSelect.value;
+      let practic = participantTypeSelect.value;
+  
+      let url = new URL(rootURL+"/auth/competitions");
+      url.searchParams.set("country", country);
+      url.searchParams.set("category", age);
+      url.searchParams.set("practic", practic);
+  
+      fetch(url)
+        .then(response => {
+          return response.json();
+        })
+        .then(data => {
+            Object.entries(data).forEach(([key, val]) => {
+              let option = document.createElement("option");
+              option.value = key;
+              option.text = val;
+              competitionSelect.add(option);
+            });
+          });
       showNextSelect("participantType", "competitionSelect", "competitionLabel")
+    };
+    
+      }
 });
 
 competitionSelect.addEventListener("change", function() {

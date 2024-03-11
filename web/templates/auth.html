@@ -35,6 +35,23 @@
                 <option value="" disabled selected>Выберите возрастную группу</option>
             </select>
 
+
+            <!-- Возрастные группы для ОВЗ-->
+            <label id="ovzGroupLabel" for="ovzGroup" style="display: none;">Возраст:</label>
+            <select name="ovzGroup" id="ovzGroup" style="display: none;">
+                <option value="" disabled selected>Выберите возрастную группу</option>
+                <option value="ovzJunior">Младшая категория (7-12 лет)</option>
+                <option value="ovzSenior">Старшая категория (12-17 лет)</option>
+            </select>
+
+
+            <label id="teacherGroupLable" for="teacherGroup" style="display: none;">Тип участия</label>
+            <select name="teacherGroup" id="teacherGroup" style="display: none;">
+                <option value="" disabled selected>Выберите тип участия</option>
+                <option value="teacherCompetition">Соревнования наставников</option>
+                <option value="childCompetition">Зарегистрировать команду детей</option>
+            </select>
+
             <!-- Селект для типа участия и кнопка подтверждения -->
             <label id="participantTypeLabel" for="participantType" style="display: none;">Тип участия:</label>
             <select id="participantType" name="participantType" style="display: none;" required>
@@ -172,31 +189,8 @@
         // Отправка данных в Telegram
         
         if (countrySelect.value !== "oth") {
-            let formData; 
-            if (participantTypeSelect.value === "individual") {
-                let formData = {
-            "telegramId": tg.initDataUnsafe.user.id,
-            "country": countrySelect.value,
-            "ageGroup": ageGroupSelect.value,
-            "participantType": participantTypeSelect.value,
-            "comptetition": getSelectValues(competitionSelect),
-            "lastName": document.getElementById("lastName").value,
-            "firstName": document.getElementById("firstName").value,
-            "patronymic": document.getElementById("patronymic").value,
-            "birthDay": document.getElementById("birthDay").value,
-            "email": document.getElementById("email").value,
-            "telegramUsername": document.getElementById("telegramUsername").value,
-            "phone": document.getElementById("phone").value,
-            "city": document.getElementById("city").value,
-            "mentorFullName": document.getElementById("mentorFullName").value,
-            "mentorPhone": document.getElementById("mentorPhone").value,
-            "mentorEmail": document.getElementById("mentorEmail").value,
-            "mentorTelegramUsername": document.getElementById("mentorTelegramNickname").value,
-                };
-            tg.sendData(JSON.stringify(formData));
-
-            }
-            else {
+            let formData;
+            if (participantTypeSelect.value === "team") {
                 let formData = {
                 "telegramId": tg.initDataUnsafe.user.id,
                 "country": countrySelect.value,
@@ -227,8 +221,32 @@
                 };
             tg.sendData(JSON.stringify(formData));
 
-            };
+            }
+            else {
+                let formData = {
+            "telegramId": tg.initDataUnsafe.user.id,
+            "country": countrySelect.value,
+            "ageGroup": ageGroupSelect.value,
+            "participantType": participantTypeSelect.value,
+            "comptetition": getSelectValues(competitionSelect),
+            "lastName": document.getElementById("lastName").value,
+            "firstName": document.getElementById("firstName").value,
+            "patronymic": document.getElementById("patronymic").value,
+            "birthDay": document.getElementById("birthDay").value,
+            "email": document.getElementById("email").value,
+            "telegramUsername": document.getElementById("telegramUsername").value,
+            "phone": document.getElementById("phone").value,
+            "city": document.getElementById("city").value,
+            "mentorFullName": document.getElementById("mentorFullName").value,
+            "mentorPhone": document.getElementById("mentorPhone").value,
+            "mentorEmail": document.getElementById("mentorEmail").value,
+            "mentorTelegramUsername": document.getElementById("mentorTelegramNickname").value,
+                };
             
+            tg.sendData(JSON.stringify(formData));
+
+            };
+               
         }
 
         else {
