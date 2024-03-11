@@ -48,7 +48,7 @@ async def data_from_web_app(message: Message):
 def main():
     dp.startup.register(on_startup)
     app.router.add_post(f"/{conf.WEBHOOK_URL}/", handler_webhook)
-    # dp.include_routers(*BOT_ROUTERS)
+    dp.include_routers(*BOT_ROUTERS)
 
     webhook_requests_handler = SimpleRequestHandler(
         dispatcher=dp,

@@ -9,4 +9,4 @@ router = Router()
 
 @router.message(CommandStart())
 async def start_command_handler(message: Message):
-    await message.answer("Выберите действие", reply_markup=start_command_keyboard())
+    await message.answer("Hi")
