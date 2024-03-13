@@ -79,6 +79,11 @@ input {
 
 
 @media only screen and (max-width: 600px) {
+  html {
+    -webkit-text-size-adjust : 100%;
+    text-size-adjust         : 100%
+  }
+
   body {
       font-size: 14px;
   }
@@ -113,7 +118,16 @@ input {
       padding: 8px;
       margin-bottom: 10px;
       box-sizing: border-box;
-  }
+      }
+  textarea {
+        -webkit-appearance : none;
+        -moz-appearance    : none;
+        -ms-appearance     : none;
+        appearance         : none;
+        outline            : 0;
+        box-shadow         : none;
+    }
+
 
   /* Стили для кнопки на мобильных устройствах */
   button {
