@@ -371,7 +371,6 @@ async def get_categories(category: str):
 @app.post("/auth")
 async def authentication(request: Request):
     """Обработка полученных данных"""
-    print(request.__dict__)
     return RedirectResponse("/auth", status_code=302)
 
 

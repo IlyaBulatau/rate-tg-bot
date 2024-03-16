@@ -135,6 +135,11 @@ competitionSelect.addEventListener("change", function() {
       else {
         document.getElementById("applicationIndividual").style.display = "block";
       };
+      var container = document.getElementsByClassName("container");
+      for (var i= 0; i < container.length ; i++) { 
+        container[i].style.height = "100%"
+     }
+
   });
 
 
@@ -144,8 +149,6 @@ document.addEventListener("DOMContentLoaded", function () {
     individualInputs.forEach(function (input) {
         input.addEventListener("input", checkIndividualFields);
     });
-
-    // Добавляем событие изменения поля наставника
 
     function checkIndividualFields() {
         const areIndividualFieldsFilled = Array.from(individualInputs).every(input => input.value.trim() !== "");
